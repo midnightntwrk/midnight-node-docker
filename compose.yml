@@ -1,0 +1,35 @@
+# This file is part of https://github.com/midnightntwrk/midnight-node-docker
+# Copyright (C) 2025 Midnight Foundation
+# SPDX-License-Identifier: Apache-2.0
+# Licensed under the Apache License, Version 2.0 (the "License");
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+volumes:
+  midnight-data-testnet: {}
+
+services:
+  midnight-node-testnet:
+    container_name: midnight
+    restart: unless-stopped
+    image: ${MIDNIGHT_NODE_IMAGE}
+    platform: linux/amd64
+    ports:
+      - "9944:9944"   # WebSocket   - For RPC/relay type of nodes (queries, new transaction submissions etc). 
+      - "30333:30333" # P2P Traffic - Peer-to-peer communication for node connectivity.
+      - "9615:9615"   # Prometheus  - For monitoring, alerting and observability.
+    env_file:
+      - ./.env
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9944/health" ]
+      interval: 2s
+    volumes:
+      - midnight-data-testnet:/node
