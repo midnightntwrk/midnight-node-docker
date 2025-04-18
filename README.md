@@ -10,7 +10,7 @@ This allows for easy orchestration of the Midnight Node service.
 
 1. Clone repo
 
-3. Modify values in `.env` file as applicable 
+3. Modify values in `.envrc` file as applicable
 
 2. Navigate to .yml file and `docker-compose up`
 

@@ -23,11 +23,15 @@ services:
     image: ${MIDNIGHT_NODE_IMAGE}
     platform: linux/amd64
     ports:
-      - "9944:9944"   # WebSocket   - For RPC/relay type of nodes (queries, new transaction submissions etc). 
+      - "9944:9944"   # WebSocket   - For RPC/relay type of nodes (queries, new transaction submissions etc).
       - "30333:30333" # P2P Traffic - Peer-to-peer communication for node connectivity.
       - "9615:9615"   # Prometheus  - For monitoring, alerting and observability.
-    env_file:
-      - ./.env
+    environment:
+      - APPEND_ARGS=${APPEND_ARGS}
+      - BOOTNODES=${BOOTNODES}
+      - CFG_PRESET=${CFG_PRESET}
+      - DB_SYNC_POSTGRES_CONNECTION_STRING=${DB_SYNC_POSTGRES_CONNECTION_STRING}
+      - NODE_KEY=${NODE_KEY}
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:9944/health" ]
       interval: 2s
