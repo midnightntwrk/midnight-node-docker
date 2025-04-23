@@ -21,7 +21,7 @@ volumes:
 
 services:
   cardano-node:
-    image: ghcr.io/intersectmbo/cardano-node:10.1.4
+    image: ghcr.io/intersectmbo/cardano-node:10.2.1
     restart: unless-stopped
     container_name: cardano-node
     ports:
@@ -35,6 +35,7 @@ services:
 
   postgres:
     image: postgres:15.3
+    platform: linux/amd64
     container_name: db-sync-postgres
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -51,6 +52,7 @@ services:
 
   db-sync:
     image: ghcr.io/intersectmbo/cardano-db-sync:13.6.0.4
+    platform: linux/amd64
     container_name: db-sync
     restart: unless-stopped
     depends_on:
