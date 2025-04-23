@@ -5,14 +5,18 @@ This allows for easy orchestration of the Midnight Node service.
 ## System requirements
 
 - Install [Docker-Compose](https://docs.docker.com/compose/install/)
+- Install [direnv](https://direnv.net/docs/installation.html)
+- Once cloned, run `direnv allow` once to set the environment variables.
 
 ## Usage
 
 1. Clone repo
 
-3. Modify values in `.envrc` file as applicable
+2. run `direnv allow` (only needs to be done when '.envrc` has been modified)
 
-2. Navigate to .yml file and `docker-compose up`
+3. Run `docker-compose up`
+
+The `.envrc` file will automatically create a random private key and save it as `midnight-node.privatekey`.
 
 ```shell
 DOCKER_DEFAULT_PLATFORM=linux/amd64 docker-compose up -d
@@ -31,6 +35,13 @@ DOCKER_DEFAULT_PLATFORM=linux/amd64 docker-compose -f ./compose-partner-chains.y
 ```
 
 🚀 That's it.
+
+### Troubleshooting
+
+If you get warnings like this then likely `direnv` is not setup or `direnv allow` has not been run:
+```
+WARN[0000] The "HOME_IPC" variable is not set. Defaulting to a blank string.
+```
 
 ### LICENSE
 
