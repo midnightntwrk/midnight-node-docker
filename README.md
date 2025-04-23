@@ -19,29 +19,36 @@ This allows for easy orchestration of the Midnight Node service.
 The `.envrc` file will automatically create a random private key and save it as `midnight-node.privatekey`.
 
 ```shell
-DOCKER_DEFAULT_PLATFORM=linux/amd64 docker-compose up -d
+docker compose up -d
 ```
 
 or for both Midnight and Cardano:
 
 ```shell
-DOCKER_DEFAULT_PLATFORM=linux/amd64 docker-compose -f ./compose-partner-chains.yml -f ./compose.yml up -d
+docker compose -f ./compose-partner-chains.yml -f ./compose.yml up -d
 ```
 
 or for Midnight, Cardano and a local Proof Server:
 
 ```shell
-DOCKER_DEFAULT_PLATFORM=linux/amd64 docker-compose -f ./compose-partner-chains.yml -f ./compose.yml -f ./proof-server.yml up -d
+docker compose -f ./compose-partner-chains.yml -f ./compose.yml -f ./proof-server.yml up -d
 ```
 
 🚀 That's it.
 
 ### Troubleshooting
 
+#### Env vars not setup
+
 If you get warnings like this then likely `direnv` is not setup or `direnv allow` has not been run:
 ```
 WARN[0000] The "HOME_IPC" variable is not set. Defaulting to a blank string.
 ```
+
+#### IPC Errors
+
+If you get IPC errors with Cardano node then delete the stale
+socket file: `rm ~/ipc/node.socket` and restart.
 
 ### LICENSE
 
