@@ -3,7 +3,7 @@ name: CI
 # Run on pushes to any branch and pull requests
 on:
   push:
-    branches: ['**']
+    branches: ['main']
   pull_request:
     branches: ['**']
 
