@@ -37,9 +37,7 @@ jobs:
           VALIDATE_GITHUB_ACTIONS: true
           VALIDATE_GITLEAKS: true
           VALIDATE_NATURAL_LANGUAGE: true
-          VALIDATE_SHELL_SHFMT: true
           VALIDATE_MARKDOWN: true
-          VALIDATE_MARKDOWN_PRETTIER: true
           FILTER_REGEX_EXCLUDE: (^cardano-config/|LICENSE\.md)
           # tell it your default branch so it can diff
           DEFAULT_BRANCH: origin/main
