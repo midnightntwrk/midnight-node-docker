@@ -8,10 +8,9 @@ permissions:
 # Run on pushes to any branch and pull requests
 on:
   push:
-    branches: ['main']
+    branches-ignore: ['main']
   pull_request:
-    branches: ['**']
-
+    branches: ['main']
 jobs:
   # Lint all YAML, JSON & Shell
   lint:
