@@ -28,6 +28,5 @@ jobs:
           FILTER_REGEX_EXCLUDE: ^cardano-config/
         env:
           # tell it your default branch so it can diff
-          DEFAULT_BRANCH: main
+          DEFAULT_BRANCH: origin/main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          MARKDOWN_CONFIG_FILE: ".github/linters/markdownlint.yml"
