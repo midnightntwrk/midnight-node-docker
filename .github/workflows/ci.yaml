@@ -24,6 +24,12 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Check compose files
+        run: |
+          docker compose -f compose.yml config -q
+          docker compose -f compose-partner-chains.yml config -q
+          docker compose -f proof-server.yml config -q
+
       - name: Run Super-linter
         uses: github/super-linter@v7
         env:
@@ -38,6 +44,7 @@ jobs:
           VALIDATE_GITLEAKS: true
           VALIDATE_NATURAL_LANGUAGE: true
           VALIDATE_MARKDOWN: true
+          VALIDATE_DOCKERFILE: true
           FILTER_REGEX_EXCLUDE: (^cardano-config/|LICENSE\.md)
           # tell it your default branch so it can diff
           DEFAULT_BRANCH: origin/main
