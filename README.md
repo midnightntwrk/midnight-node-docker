@@ -38,6 +38,18 @@ docker compose -f ./compose-partner-chains.yml -f ./compose.yml -f ./proof-serve
 
 ### Troubleshooting
 
+### Clean start
+
+To restart from fresh, run:
+
+```sh
+docker compose -f ./compose-partner-chains.yml -f ./compose.yml -f ./proof-server.yml down -v
+docker compose -f ./compose-partner-chains.yml -f ./compose.yml -f ./proof-server.yml kill
+rm ~/ipc/node.socket
+rm -R ./data
+rm -R ./cardano-data
+```
+
 #### Env vars not setup
 
 If you get warnings like this then likely `direnv` is not setup or `direnv allow` has not been run:
@@ -49,6 +61,18 @@ WARN[0000] The "HOME_IPC" variable is not set. Defaulting to a blank string.
 
 If you get IPC errors with Cardano node then delete the stale
 socket file: `rm ~/ipc/node.socket` and restart.
+
+#### Midnight node Errors
+
+If you encounter this message on the midnight node it's likely that the
+cardano-node is still syncing and it will go away once it's fully synced:
+
+```
+Unable to author block in slot. Failure creating inherent data provider:
+'No latest block on chain.' not found.
+Possible causes: main chain follower configuration error, db-sync not synced fully,
+or data not set on the main chain.
+```
 
 ### LICENSE
 
