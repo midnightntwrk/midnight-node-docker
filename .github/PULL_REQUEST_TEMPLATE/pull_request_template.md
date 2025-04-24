@@ -12,9 +12,9 @@
 - [ ] All check jobs of the CI have succeeded
 - [ ] Self-reviewed the diff
 - [ ] Reviewer requested
-- [ ] Update README file (if relevant)
+- [ ] Update README.md file (if relevant)
 - [ ] Update documentation (if relevant)
-- [ ] No new TODOs introduced
+- [ ] No new todos introduced
 
 ## Links
 

@@ -1,5 +1,10 @@
 name: CI
 
+# ↓ lock down top‐level permissions to only what we use
+permissions:
+  contents: read             # we only need to checkout code
+  actions: read              # to query workflows/runs
+
 # Run on pushes to any branch and pull requests
 on:
   push:
