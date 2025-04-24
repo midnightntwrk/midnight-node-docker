@@ -4,6 +4,7 @@ name: CI
 permissions:
   contents: read             # we only need to checkout code
   actions: read              # to query workflows/runs
+  statuses: write
 
 # Run on pushes to any branch and pull requests
 on:
@@ -25,16 +26,15 @@ jobs:
 
       - name: Run Super-linter
         uses: github/super-linter@v7
-        with:
+        #   VALIDATE_MARKDOWN_PRETTIER: false
+        #   VALIDATE_YAML_PRETTIER: false
+        env:
           # only lint the file types you care about
           VALIDATE_YAML: true
           VALIDATE_JSON: true
           VALIDATE_SHELL: true
-
-          VALIDATE_MARKDOWN_PRETTIER: false
-          VALIDATE_YAML_PRETTIER: false
+          # BASH, BASH_EXEC CHECOV GITHUB_ACTIONS  GITLEAKS JSON NATURAL_LANGUAGE SHELL_SHFMT MARKDOWN MARKDOWN_PRETTIER
           FILTER_REGEX_EXCLUDE: (^cardano-config/|LICENSE\.md)
-        env:
-          # tell it your default branch so it can diff
+            # tell it your default branch so it can diff
           DEFAULT_BRANCH: origin/main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
