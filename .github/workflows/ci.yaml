@@ -27,4 +27,5 @@ jobs:
         env:
           # tell it your default branch so it can diff
           DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MARKDOWN_CONFIG_FILE: ".github/linters/markdownlint.yml"
