@@ -1,0 +1,28 @@
+name: CI
+
+# Run on pushes to any branch and pull requests
+on:
+  push:
+    branches: ['**']
+  pull_request:
+    branches: ['**']
+
+jobs:
+  # Lint all YAML, JSON & Shell
+  lint:
+    name: Lint code & configs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Run Super-linter
+        uses: github/super-linter@v5
+        with:
+          # only lint the file types you care about
+          VALIDATE_YAML: true
+          VALIDATE_JSON: true
+          VALIDATE_SHELL: true
+        env:
+          # tell it your default branch so it can diff
+          DEFAULT_BRANCH: main
