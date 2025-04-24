@@ -26,6 +26,7 @@ jobs:
 
       - name: Check compose files
         run: |
+          source ./.envrc
           docker compose -f compose.yml config -q
           docker compose -f compose-partner-chains.yml config -q
           docker compose -f proof-server.yml config -q
