@@ -23,7 +23,8 @@ jobs:
           VALIDATE_YAML: true
           VALIDATE_JSON: true
           VALIDATE_SHELL: true
-          FILTER_REGEX_EXCLUDE: '(^|/)(cardano-config)(/|$)'
+          FILTER_REGEX_EXCLUDE: ^cardano-config/
         env:
           # tell it your default branch so it can diff
           DEFAULT_BRANCH: main
+          MARKDOWN_CONFIG_FILE: ".github/linters/markdownlint.yml"
