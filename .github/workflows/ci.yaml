@@ -33,7 +33,15 @@ jobs:
           VALIDATE_YAML: true
           VALIDATE_JSON: true
           VALIDATE_SHELL: true
-          # BASH, BASH_EXEC CHECOV GITHUB_ACTIONS  GITLEAKS JSON NATURAL_LANGUAGE SHELL_SHFMT MARKDOWN MARKDOWN_PRETTIER
+          VALIDATE_BASH: true
+          VALIDATE_BASH_EXEC: true
+          VALIDATE_CHECOV: true
+          VALIDATE_GITHUB_ACTIONS: true
+          VALIDATE_GITLEAKS: true
+          VALIDATE_NATURAL_LANGUAGE: true
+          VALIDATE_SHELL_SHFMT: true
+          VALIDATE_MARKDOWN: true
+          VALIDATE_MARKDOWN_PRETTIER: true
           FILTER_REGEX_EXCLUDE: (^cardano-config/|LICENSE\.md)
             # tell it your default branch so it can diff
           DEFAULT_BRANCH: origin/main
