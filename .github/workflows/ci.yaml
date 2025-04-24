@@ -8,9 +8,10 @@ permissions:
 # Run on pushes to any branch and pull requests
 on:
   push:
-    branches-ignore: ['main']
-  pull_request:
     branches: ['main']
+  pull_request:
+    branches: ['**']
+
 jobs:
   # Lint all YAML, JSON & Shell
   lint:
@@ -29,7 +30,10 @@ jobs:
           VALIDATE_YAML: true
           VALIDATE_JSON: true
           VALIDATE_SHELL: true
-          FILTER_REGEX_EXCLUDE: ^cardano-config/
+
+          VALIDATE_MARKDOWN_PRETTIER: false
+          VALIDATE_YAML_PRETTIER: false
+          FILTER_REGEX_EXCLUDE: (^cardano-config/|LICENSE\.md)
         env:
           # tell it your default branch so it can diff
           DEFAULT_BRANCH: origin/main
