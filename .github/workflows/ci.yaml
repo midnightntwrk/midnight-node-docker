@@ -26,8 +26,6 @@ jobs:
 
       - name: Run Super-linter
         uses: github/super-linter@v7
-        #   VALIDATE_MARKDOWN_PRETTIER: false
-        #   VALIDATE_YAML_PRETTIER: false
         env:
           # only lint the file types you care about
           VALIDATE_YAML: true
@@ -43,6 +41,6 @@ jobs:
           VALIDATE_MARKDOWN: true
           VALIDATE_MARKDOWN_PRETTIER: true
           FILTER_REGEX_EXCLUDE: (^cardano-config/|LICENSE\.md)
-            # tell it your default branch so it can diff
+          # tell it your default branch so it can diff
           DEFAULT_BRANCH: origin/main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
