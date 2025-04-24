@@ -5,40 +5,80 @@ This allows for easy orchestration of the Midnight Node service.
 ## System requirements
 
 - Install [Docker Engine](https://docs.docker.com/engine/install/)
-- Install [Docker-Compose](https://docs.docker.com/compose/install/)
+- Install [Docker Compose](https://docs.docker.com/compose/install/)
 - Install [direnv](https://direnv.net/docs/installation.html)
 
 ## Usage
 
 1. Clone repo
 
-2. Modify values in `.envrc` file as applicable
+2. run `direnv allow` to load the environment variables
 
-3. Run `direnv allow` to load the environment variables
+3. Run `docker-compose up`
 
-3. Choose which compose files to use:
+The `.envrc` file will automatically create a random private key and save it as `midnight-node.privatekey`.
+
+Choose which compose files to use:
    - `compose.yml` for Midnight Node
-   - `compose-partner-chains.yml` for Cardano DB Sync
+   - `compose-partner-chains.yml` for Cardano + DB Sync
    - `proof-server.yml` for Local Proof Server
 
 One can use one or multiple compose files at once.
 
 For example, to run the Midnight Node, you can do:
 ```shell
-DOCKER_DEFAULT_PLATFORM=linux/amd64 docker-compose up -d
+docker compose up -d
 ```
 
 or to run the Midnight Node and Cardano DB Sync, you can do:
 ```shell
-DOCKER_DEFAULT_PLATFORM=linux/amd64 docker-compose -f ./compose-partner-chains.yml -f ./compose.yml up -d
+docker compose -f ./compose-partner-chains.yml -f ./compose.yml up -d
 ```
 
 or to run the Midnight Node, Cardano DB Sync and a local Proof Server, you can do:
 ```shell
-DOCKER_DEFAULT_PLATFORM=linux/amd64 docker-compose -f ./compose-partner-chains.yml -f ./compose.yml -f ./proof-server.yml up -d
+docker compose -f ./compose-partner-chains.yml -f ./compose.yml -f ./proof-server.yml up -d
 ```
 
 🚀 That's it.
+
+### Troubleshooting
+
+### Clean start
+
+To restart from fresh, run:
+
+```sh
+docker compose -f ./compose-partner-chains.yml -f ./compose.yml -f ./proof-server.yml down -v
+docker compose -f ./compose-partner-chains.yml -f ./compose.yml -f ./proof-server.yml kill
+rm ~/ipc/node.socket
+rm -R ./data
+rm -R ./cardano-data
+```
+
+#### Env vars not setup
+
+If you get warnings like this then likely `direnv` is not setup or `direnv allow` has not been run:
+```
+WARN[0000] The "HOME_IPC" variable is not set. Defaulting to a blank string.
+```
+
+#### IPC Errors
+
+If you get IPC errors with Cardano node then delete the stale
+socket file: `rm ~/ipc/node.socket` and restart.
+
+#### Midnight node Errors
+
+If you encounter this message on the midnight node it's likely that the
+cardano-node is still syncing and it will go away once it's fully synced:
+
+```
+Unable to author block in slot. Failure creating inherent data provider:
+'No latest block on chain.' not found.
+Possible causes: main chain follower configuration error, db-sync not synced fully,
+or data not set on the main chain.
+```
 
 ### LICENSE
 
