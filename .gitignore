@@ -1,1 +1,4 @@
 /cardano-data/*
+/data
+*.privatekey
+*.password

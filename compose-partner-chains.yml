@@ -21,20 +21,21 @@ volumes:
 
 services:
   cardano-node:
-    image: ghcr.io/intersectmbo/cardano-node:10.1.4
+    image: ${CARDANO_IMAGE}
     restart: unless-stopped
     container_name: cardano-node
     ports:
       - "3001:3001"
     environment:
-      - NETWORK=preview
+      - NETWORK=${CARDANO_NETWORK}
       - CARDANO_NODE_SOCKET_PATH=/ipc/node.socket
     volumes:
       - ${HOME_IPC}:/ipc   # Use ${HOME_IPC} from .envrc
-      - $CARDANO_DATA_DIR:/data
+      - ${CARDANO_DATA_DIR}:/data
 
   postgres:
     image: postgres:15.3
+    platform: linux/amd64
     container_name: db-sync-postgres
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -52,13 +53,14 @@ services:
 
   db-sync:
     image: ghcr.io/intersectmbo/cardano-db-sync:13.6.0.4
+    platform: linux/amd64
     container_name: db-sync
     restart: unless-stopped
     depends_on:
       postgres:
         condition: service_healthy
     environment:
-      - NETWORK=preview
+      - NETWORK=${CARDANO_NETWORK}
       - POSTGRES_HOST=${POSTGRES_HOST}
       - POSTGRES_PORT=${POSTGRES_PORT}
       - POSTGRES_DB=${POSTGRES_DB}
@@ -83,6 +85,6 @@ services:
       - --node-socket
       - /ipc/node.socket
       - --node-config
-      - /config/preview/cardano-node/config.json
+      - /config/${CARDANO_NETWORK}/cardano-node/config.json
       - --host
       - 0.0.0.0

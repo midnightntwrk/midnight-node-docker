@@ -21,7 +21,6 @@ services:
     container_name: midnight
     restart: unless-stopped
     image: ${MIDNIGHT_NODE_IMAGE}
-    platform: linux/amd64
     ports:
       - "9944:9944"   # WebSocket   - For RPC/relay type of nodes (queries, new transaction submissions etc).
       - "30333:30333" # P2P Traffic - Peer-to-peer communication for node connectivity.
