@@ -22,6 +22,7 @@ volumes:
 services:
   cardano-node:
     image: ${CARDANO_IMAGE}
+    platform: linux/amd64
     restart: unless-stopped
     container_name: cardano-node
     ports:
