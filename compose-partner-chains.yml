@@ -73,6 +73,7 @@ services:
 
   ogmios:
     image: cardanosolutions/ogmios:v6.11.0
+    platform: linux/amd64
     container_name: ogmios
     restart: unless-stopped
     environment:
