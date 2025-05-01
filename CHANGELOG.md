@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### 🚀 Features
 
+- Switch networks by altering CFG_PRESET only
+- Added `test.sh` to detect problems and provide solutions.
+- Added `reset-midnight.sh` script to clear down midnight's blockchain.
+- `--validator` flag not set by default.
 - Port from prior repo (#3)
 - If direnv isn't working give an appropriate error message.
 - /data dir should be .gitignored

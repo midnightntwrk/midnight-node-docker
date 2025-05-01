@@ -12,9 +12,11 @@ This allows for easy orchestration of the Midnight Node service.
 
 1. Clone repo
 
-2. run `direnv allow` to load the environment variables
+2. In `.envrc` set CFG_PRESET to be the environment you wish to point to (E.g. testnet-02).
 
-3. Run `docker-compose up`
+3. run `direnv allow` to load the environment variables
+
+4. Run `docker-compose up`
 
 The `.envrc` file will automatically create a random private key and save it as `midnight-node.privatekey`.
 
