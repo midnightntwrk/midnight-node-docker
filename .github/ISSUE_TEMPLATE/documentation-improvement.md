@@ -8,10 +8,10 @@ assignees: ""
 
 Documentation Improvement: Clearly describe the improvement requested for existing content and/or raise missing areas of documentation and provide details for what should be included.
 
-### Documentation url: 
+### Documentation URL:
 <!-- Specify the exact location of the documentation you are referencing. -->
 
-### Description of Improvement: 
+### Description of Improvement:
 <!-- Provide a detailed description of the requested improvement. -->
 
 ### Proposed Solution (Optional):
