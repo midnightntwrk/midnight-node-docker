@@ -14,5 +14,7 @@ fi
 docker run -it \
   -e CFG_PRESET="${CFG_PRESET}" \
   -e DB_SYNC_POSTGRES_CONNECTION_STRING="${DB_SYNC_POSTGRES_CONNECTION_STRING}" \
-  -v ./data:/data "${MIDNIGHT_NODE_IMAGE}" \
+  -v ./data:/data \
+  -v ./envs/${CFG_PRESET}/pc-chain-config.json:/pc-chain-config.json \
+  "${MIDNIGHT_NODE_IMAGE}" \
   "$@"

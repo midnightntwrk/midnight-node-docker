@@ -52,10 +52,10 @@ services:
       timeout: 5s
       retries: 5
 
-  db-sync:
+  cardano-db-sync:
     image: ghcr.io/intersectmbo/cardano-db-sync:13.6.0.4
     platform: linux/amd64
-    container_name: db-sync
+    container_name: cardano-db-sync
     restart: unless-stopped
     depends_on:
       postgres:
@@ -71,10 +71,10 @@ services:
       - ${HOME_IPC}:/node-ipc  # Use ${HOME_IPC} from .envrc
       - db-sync-data:/var/lib
 
-  ogmios:
+  cardano-ogmios:
     image: cardanosolutions/ogmios:v6.11.0
     platform: linux/amd64
-    container_name: ogmios
+    container_name: cardano-ogmios
     restart: unless-stopped
     environment:
       - DATA_DIR=/data

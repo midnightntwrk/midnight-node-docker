@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# ─── Configuration ─────────────────────────────────────────────────────────────
+RPC_URL="http://127.0.0.1:9944"     # your node’s JSON-RPC HTTP endpoint
+MAX_LAG=0                           # threshold (0 means any block >0 is OK)
+MAX_FINALITY_LAG=15
+OGMIOS_LAG=20
+
 # Check if the MIDNIGHT_NODE_IMAGE environment variable is set
 if [ -z "$MIDNIGHT_NODE_IMAGE" ]; then
   echo "Error: MIDNIGHT_NODE_IMAGE environment variable is not set"
@@ -31,6 +37,20 @@ if tip_json=$(./cardano-cli.sh query tip 2>/dev/null); then
 else
   ./cardano-cli.sh query tip
   echo "❌ Cardano Node is not responding! - check 'docker logs cardano-node'"
+  exit 1
+fi
+
+# Ogmios is typically next to get setup:
+OGMIOS_HEALTH=$(curl -sS http://localhost:1337/health)
+ogmios_tip=$(echo "$OGMIOS_HEALTH" | jq '.lastKnownTip.slot')
+
+lag=$(( cardano_tip - ogmios_tip ))
+if (( lag < $OGMIOS_LAG )); then
+  echo "✅ Ogmios lag=$OGMIOS_LAG"
+else
+  echo $OGMIOS_HEALTH
+  echo "❌ Ogmios lagging by $lag: Cardano: $cardano_tip > "
+  echo "                        Ogmios: $ogmios_tip"
   exit 1
 fi
 
@@ -69,16 +89,12 @@ if (( lag < 0 )); then
   echo "⚠️  db-sync ahead of node? (lag = $lag)"
   exit 1
 elif (( lag > max_lag )); then
-  echo "❌ db-sync is falling behind by $lag slots"
+  echo "❌ db-sync is behind by $lag slots"
   exit 1
 else
   echo "✅ db-sync is in sync (lag = $lag slots)"
 fi
 
-# ─── Configuration ─────────────────────────────────────────────────────────────
-RPC_URL="http://127.0.0.1:9944"     # your node’s JSON-RPC HTTP endpoint
-MAX_LAG=0                           # threshold (0 means any block >0 is OK)
-MAX_FINALITY_LAG=15
 
 #
 # Check midnight-node has peers:
@@ -204,3 +220,5 @@ else
 fi
 
 echo "✅ Any other problems are your own. Have fun!"
+echo ""
+echo " View Ogmios: http://localhost:1337/"
