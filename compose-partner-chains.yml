@@ -18,11 +18,11 @@ volumes:
   db-sync-data: {}
   postgres-data: {}
   ogmios-data: {}
-  kupo-data: {}
 
 services:
   cardano-node:
     image: ${CARDANO_IMAGE}
+    platform: linux/amd64
     restart: unless-stopped
     container_name: cardano-node
     ports:
@@ -52,10 +52,10 @@ services:
       timeout: 5s
       retries: 5
 
-  db-sync:
+  cardano-db-sync:
     image: ghcr.io/intersectmbo/cardano-db-sync:13.6.0.4
     platform: linux/amd64
-    container_name: db-sync
+    container_name: cardano-db-sync
     restart: unless-stopped
     depends_on:
       postgres:
@@ -71,9 +71,10 @@ services:
       - ${HOME_IPC}:/node-ipc  # Use ${HOME_IPC} from .envrc
       - db-sync-data:/var/lib
 
-  ogmios:
-    image: cardanosolutions/ogmios:v6.5.0
-    container_name: ogmios
+  cardano-ogmios:
+    image: cardanosolutions/ogmios:v6.11.0
+    platform: linux/amd64
+    container_name: cardano-ogmios
     restart: unless-stopped
     environment:
       - DATA_DIR=/data
@@ -89,26 +90,3 @@ services:
       - /config/${CARDANO_NETWORK}/cardano-node/config.json
       - --host
       - 0.0.0.0
-
-  kupo:
-    image: cardanosolutions/kupo:v2.9.0
-    container_name: kupo
-    command:
-      - --node-socket
-      - /ipc/node.socket
-      - --node-config
-      - /config/config.json
-      - --host
-      - 0.0.0.0
-      - --workdir
-      - /db
-      - --match
-      - "*"
-      - --since
-      - "origin"
-    ports:
-      - "1442:1442"
-    volumes:
-      - kupo-data:/db
-      - ${HOME_IPC}:/ipc  # Use ${HOME_IPC} from .envrc
-      - $CARDANO_CONFIG_DIR:/config

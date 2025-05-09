@@ -1,0 +1,7 @@
+# overrides for qanet
+export MIDNIGHT_NODE_IMAGE="ghcr.io/midnight-ntwrk/midnight-node:0.12.0-rc.3"
+
+# Well known addresses of network that allow discovery of all other nodes.
+export BOOTNODES="/dns/boot-node-01.qanet.dev.midnight.network/tcp/30333/ws/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp \
+/dns/boot-node-02.qanet.dev.midnight.network/tcp/30333/ws/p2p/12D3KooWHdiAxVd8uMQR1hGWXccidmfCwLqcMpGwR6QcTP6QRMuD \
+ /dns/boot-node-03.qanet.dev.midnight.network/tcp/30333/ws/p2p/12D3KooWSCufgHzV4fCwRijfH2k3abrpAJxTKxEvN1FDuRXA2U9x"
