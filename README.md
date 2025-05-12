@@ -12,9 +12,11 @@ This allows for easy orchestration of the Midnight Node service.
 
 1. Clone repository
 
-2. run `direnv allow` to load the environment variables
+2. In `.envrc` set CFG_PRESET to be the environment you wish to point to (E.g. testnet-02).
 
-3. Run `docker-compose up`
+3. run `direnv allow` to load the environment variables
+
+4. Run `docker-compose up`
 
 The `.envrc` file will automatically create a random private key and save it as `midnight-node.privatekey`.
 
@@ -48,6 +50,11 @@ docker compose -f ./compose-partner-chains.yml -f ./compose.yml -f ./proof-serve
 
 ### Troubleshooting
 
+### Connecting to Ogmios
+
+If you're using `midnight-node smartcontract` or `midnight-node wizards` that need ogmios, and you're running midnight-node in docker you must pass `-O ws://host.docker.internal:1337` as an argument.
+(Once PartnerChains 1.7+ is released OGMIOS_URL env var can be set so that it just works, but for now you have to pass it as an argument.)
+
 ### Clean start
 
 To restart from fresh, run:
@@ -56,8 +63,8 @@ To restart from fresh, run:
 docker compose -f ./compose-partner-chains.yml -f ./compose.yml -f ./proof-server.yml down -v
 docker compose -f ./compose-partner-chains.yml -f ./compose.yml -f ./proof-server.yml kill
 rm ~/ipc/node.socket
-rm -R ./data
 rm -R ./cardano-data
+docker volume rm midnight-node-docker_midnight-data-testnet
 ```
 
 #### Env vars not setup
