@@ -15,7 +15,7 @@
 
 services:
   proof-server:
-    image: midnightnetwork/proof-server:3.0.7
+    image: midnightnetwork/proof-server:4.0.0
     ports:
       - "6300:6300"
     command: "'midnight-proof-server --network testnet'"

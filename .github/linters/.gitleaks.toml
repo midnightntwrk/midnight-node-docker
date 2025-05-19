@@ -1,0 +1,5 @@
+[allowlist]
+description = "Exclude public keys"
+paths = [
+    '''(?:^|/)pc-chain-config\.json$''',
+]

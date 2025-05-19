@@ -7,13 +7,29 @@ MAX_LAG=0                           # threshold (0 means any block >0 is OK)
 MAX_FINALITY_LAG=15
 OGMIOS_LAG=20
 
-# Check if the MIDNIGHT_NODE_IMAGE environment variable is set
+# Check direnv allow has been run...
 if [ -z "$MIDNIGHT_NODE_IMAGE" ]; then
-  echo "Error: MIDNIGHT_NODE_IMAGE environment variable is not set"
+  echo "Error: MIDNIGHT_NODE_IMAGE environment variable is not set - run direnv allow"
   exit 1
 fi
 
-if [ ! -e "$HOME_IPC/node.socket" ]; then
+# check recent version of docker is running...
+docker_version=$(docker --version | awk '{split($3, v, "."); print v[1]}')
+if (( docker_version < 26 )); then
+    echo "Docker major version $docker_version is not at least v26 - please upgrade docker"
+    exit 1
+fi
+
+if [ ! -S "$HOME_IPC/node.socket" ]; then
+  # cardano socket does not exit...
+  cardano_container=$(docker ps --filter "name=cardano-node")
+  if [[ -z "$cardano_container" ]]; then
+    echo "cardano container not running, please run docker compose -f ./compose-partner-chains.yml -f ./compose.yml -d"
+    exit 1
+  else
+    echo "cardano container running: $cardano_container"
+  fi
+
   echo "Tail cardano-node waiting for it to be ready..."
   echo "(lots of logs: will take a few seconds before you see anything)"
   docker logs cardano-node --since 5s -f &
@@ -27,7 +43,16 @@ if [ ! -e "$HOME_IPC/node.socket" ]; then
 
   # Stop following cardano logs
   kill "$CARDANO_LOG_PID"
+else
+  # Check if socket is stale...
+  if ! lsof "$HOME_IPC/node.socket" > /dev/null; then
+    echo "❌ No process is using the Cardano socket file. It may be stale - please delete $HOME_IPC/node.socket and restart cardano components"
+    exit 1
+  else
+    echo "✅ Cardano node appears to be using the socket."
+  fi
 fi
+
 
 if tip_json=$(./cardano-cli.sh query tip 2>/dev/null); then
   cardano_tip=$(jq -r '.slot' <<<"$tip_json")
@@ -45,10 +70,10 @@ OGMIOS_HEALTH=$(curl -sS http://localhost:1337/health)
 ogmios_tip=$(echo "$OGMIOS_HEALTH" | jq '.lastKnownTip.slot')
 
 lag=$(( cardano_tip - ogmios_tip ))
-if (( lag < $OGMIOS_LAG )); then
+if (( lag < OGMIOS_LAG )); then
   echo "✅ Ogmios lag=$OGMIOS_LAG"
 else
-  echo $OGMIOS_HEALTH
+  echo "$OGMIOS_HEALTH"
   echo "❌ Ogmios lagging by $lag: Cardano: $cardano_tip > "
   echo "                        Ogmios: $ogmios_tip"
   exit 1
@@ -78,7 +103,7 @@ export PGPASSWORD=$POSTGRES_PASSWORD
 
 db_sync_tip=$(psql \
   -h 127.0.0.1 -p 5432 \
-  -U $POSTGRES_USER -d $POSTGRES_DB \
+  -U "$POSTGRES_USER" -d "$POSTGRES_DB" \
   -tAc "SELECT COALESCE(MAX(slot_no),0) FROM block;")
 
 echo "   cardano-node tip slot: $cardano_tip"
@@ -112,7 +137,7 @@ IS_SYNCING=$(echo "$HEALTH" | jq '.result.isSyncing')
 if [[ "$SHOULD_HAVE_PEERS" == "true" && "$PEERS" -lt 1 ]]; then
   echo "⚠️  midnight-node has $PEERS peers!"
 
-  echo $HEALTH
+  echo "$HEALTH"
 
   docker logs midnight  2>&1 | grep "Genesis mismatch"
   echo "For genesis mismatch, check that CFG_PRESET=$CFG_PRESET is aligned with BOOTNODES=$BOOTNODES"
@@ -126,7 +151,7 @@ if [[ "$IS_SYNCING" == "true" ]]; then
       SYNC=$(curl -s -H "Content-Type:application/json" \
       -d '{"jsonrpc":"2.0","method":"system_syncState","params":[],"id":1}' \
       "$RPC_URL")
-      read CURRENT TARGET <<< $(echo "$SYNC" | jq -r '.result | "\(.currentBlock) \(.highestBlock)"')
+      read -r CURRENT TARGET <<< "$(echo "$SYNC" | jq -r '.result | "\(.currentBlock) \(.highestBlock)"')"
       echo "   midnight Syncing: $CURRENT / $TARGET"
       if [ "$CURRENT" == "$TARGET" ]; then
         break
@@ -222,3 +247,7 @@ fi
 echo "✅ Any other problems are your own. Have fun!"
 echo ""
 echo " View Ogmios: http://localhost:1337/"
+
+
+# ogmios can be queried with json rpc:
+# curl -H 'content-type: application/json' http://localhost:1337 -d '{"jsonrpc": "2.0", "method":"queryLedgerState/utxo", "params":{"addresses":["addr_test1vphpcf32drhhznv6rqmrmgpuwq06kug0lkg22ux777rtlqst2er0r"]}}'

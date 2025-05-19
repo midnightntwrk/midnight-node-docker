@@ -35,4 +35,6 @@ services:
       test: [ "CMD", "curl", "-f", "http://localhost:9944/health" ]
       interval: 2s
     volumes:
+      - ./data:/data
+      - ./envs/${CFG_PRESET}/pc-chain-config.json:/pc-chain-config.json
       - midnight-data-testnet:/node
