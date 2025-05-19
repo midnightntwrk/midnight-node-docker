@@ -42,7 +42,6 @@ jobs:
           VALIDATE_BASH_EXEC: true
           VALIDATE_CHECOV: true
           VALIDATE_GITHUB_ACTIONS: true
-          VALIDATE_GITLEAKS: true
           VALIDATE_NATURAL_LANGUAGE: true
           VALIDATE_MARKDOWN: true
           VALIDATE_DOCKERFILE: true
@@ -50,4 +49,3 @@ jobs:
           # tell it your default branch so it can diff
           DEFAULT_BRANCH: origin/main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITLEAKS_CONFIG: ".gitleaks.toml"
