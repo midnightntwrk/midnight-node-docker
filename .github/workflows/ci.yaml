@@ -50,4 +50,3 @@ jobs:
           # tell it your default branch so it can diff
           DEFAULT_BRANCH: origin/main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITLEAKS_CONFIG_FILE: .github/linters/.gitleaks.toml
