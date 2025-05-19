@@ -1,0 +1,7 @@
+# overrides for testnet-02
+export MIDNIGHT_NODE_IMAGE="midnightnetwork/midnight-node:0.12.0"
+
+# These are well known addresses of a network that allow you to discover all the other nodes.
+export BOOTNODES="/dns/boot-node-01.testnet-02.midnight.network/tcp/30333/ws/p2p/12D3KooWMjUq13USCvQR9Y6yFzYNYgTQBLNAcmc8psAuPx2UUdnB \
+           /dns/boot-node-02.testnet-02.midnight.network/tcp/30333/ws/p2p/12D3KooWR1cHBUWPCqk3uqhwZqUFekfWj8T7ozK6S18DUT745v4d \
+           /dns/boot-node-03.testnet-02.midnight.network/tcp/30333/ws/p2p/12D3KooWQxxUgq7ndPfAaCFNbAxtcKYxrAzTxDfRGNktF75SxdX5"

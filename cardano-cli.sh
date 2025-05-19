@@ -16,5 +16,6 @@ DOCKER_DEFAULT_PLATFORM=linux/amd64 docker run --rm \
   -e CARDANO_NODE_SOCKET_PATH="/ipc/node.socket" \
   -e CARDANO_NODE_NETWORK_ID="${CARDANO_NODE_NETWORK_ID}" \
   -v ~/ipc:/ipc \
+  -v "${CARDANO_DATA_DIR}:/data" \
   "${CARDANO_IMAGE}" \
   cli "$@"

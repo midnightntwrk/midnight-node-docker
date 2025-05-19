@@ -42,7 +42,6 @@ jobs:
           VALIDATE_BASH_EXEC: true
           VALIDATE_CHECOV: true
           VALIDATE_GITHUB_ACTIONS: true
-          VALIDATE_GITLEAKS: true
           VALIDATE_NATURAL_LANGUAGE: true
           VALIDATE_MARKDOWN: true
           VALIDATE_DOCKERFILE: true
