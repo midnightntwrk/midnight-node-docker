@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 🚀 Features
 
-- Have Cardano's ipc socket stored in a docker volume so stale file can be recreated on all OSes.
+- Cardano's ipc socket file is now stored in a docker volume so when stale can be recreated on all OSes.
+- `cardano-cli.sh`, `midnight-node.sh` and `midnight-shell.sh` execute within the running container.
 - Switch networks by altering CFG_PRESET only
 - Added `test.sh` to detect problems and provide solutions.
 - Added `reset-midnight.sh` script to clear down midnight's blockchain.
