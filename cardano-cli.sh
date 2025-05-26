@@ -13,5 +13,4 @@ fi
 
 # Run in same container as cardano-node.
 # docker exec doesn't support `--env` params so wrapped in an `sh`.
-args="$@"
-docker exec -t cardano-node sh -c "CARDANO_NODE_NETWORK_ID=${CARDANO_NODE_NETWORK_ID} /usr/local/bin/cardano-cli $args"
+docker exec -t cardano-node sh -c "CARDANO_NODE_NETWORK_ID=${CARDANO_NODE_NETWORK_ID} /usr/local/bin/cardano-cli $*"
