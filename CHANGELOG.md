@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 🚀 Features
 
+- Optimise postgres config
 - Switch networks by altering CFG_PRESET only
 - Added `test.sh` to detect problems and provide solutions.
 - Added `reset-midnight.sh` script to clear down midnight's blockchain.
