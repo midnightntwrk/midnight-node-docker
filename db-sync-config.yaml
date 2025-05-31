@@ -39,9 +39,9 @@ insert_options:
   metadata:
     enable: false
   plutus:
-    enable: false
+    enable: true
   governance: "enable"
-  offchain_pool_data": "disabled"
+  offchain_pool_data": "disable"
   pool_stat: "disable"
 
 # ------------------------------------------------------------------------------
