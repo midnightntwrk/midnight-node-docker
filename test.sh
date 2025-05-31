@@ -20,15 +20,15 @@ if (( docker_version < 26 )); then
     exit 1
 fi
 
-if [ ! -S "$HOME_IPC/node.socket" ]; then
-  # cardano socket does not exit...
-  cardano_container=$(docker ps --filter "name=cardano-node")
-  if [[ -z "$cardano_container" ]]; then
-    echo "cardano container not running, please run docker compose -f ./compose-partner-chains.yml -f ./compose.yml -d"
-    exit 1
-  else
-    echo "cardano container running: $cardano_container"
-  fi
+cardano_container=$(docker ps --filter "name=cardano-node")
+if [[ "$cardano_container" != *"cardano"* ]]; then
+  echo "cardano container not running, please run docker compose -f ./compose-partner-chains.yml -d"
+  exit 1
+fi
+
+tip=$(./cardano-cli.sh query tip 2>&1 || true)
+if [[ "$tip" == *"No such file"* ]]; then
+  # cardano socket does not exist (yet?)...
 
   echo "Tail cardano-node waiting for it to be ready..."
   echo "(lots of logs: will take a few seconds before you see anything)"
@@ -36,21 +36,14 @@ if [ ! -S "$HOME_IPC/node.socket" ]; then
   CARDANO_LOG_PID=$!
 
   # Wait for the file to appear
-  while [ ! -e "$HOME_IPC/node.socket" ]; do
+  while [[ "$tip" == *"No such file"* ]]; do
+      tip=$(./cardano-cli.sh query tip 2>&1 || true)
       sleep 1
   done
   echo Cardano node started....
 
   # Stop following cardano logs
   kill "$CARDANO_LOG_PID"
-else
-  # Check if socket is stale...
-  if ! lsof "$HOME_IPC/node.socket" > /dev/null; then
-    echo "❌ No process is using the Cardano socket file. It may be stale - please delete $HOME_IPC/node.socket and restart cardano components"
-    exit 1
-  else
-    echo "✅ Cardano node appears to be using the socket."
-  fi
 fi
 
 
@@ -124,7 +117,11 @@ fi
 #
 # Check midnight-node has peers:
 #
-
+midnight=$(docker ps --filter "name=midnight")
+if [[ "$midnight" != *"midnight"* ]]; then
+  echo "❌ midnight container not running, please run docker compose -d"
+  exit 1
+fi
 
 HEALTH=$(curl -s -H "Content-Type:application/json" \
   -d '{"jsonrpc":"2.0","method":"system_health","params":[],"id":1}' \
@@ -151,7 +148,8 @@ if [[ "$IS_SYNCING" == "true" ]]; then
       SYNC=$(curl -s -H "Content-Type:application/json" \
       -d '{"jsonrpc":"2.0","method":"system_syncState","params":[],"id":1}' \
       "$RPC_URL")
-      read -r CURRENT TARGET <<< "$(echo "$SYNC" | jq -r '.result | "\(.currentBlock) \(.highestBlock)"')"
+      CURRENT=$(echo "$SYNC" | jq -r '.result.currentBlock')
+      TARGET=$(echo "$SYNC" | jq -r '.result.highestBlock')
       echo "   midnight Syncing: $CURRENT / $TARGET"
       if [ "$CURRENT" == "$TARGET" ]; then
         break
@@ -185,7 +183,7 @@ if [[ -z "$hexnum" ]]; then
 fi
 
 # ─── 3) Convert hex to decimal ────────────────────────────────────────────────
-# strip “0x” then convert
+# strip "0x" then convert
 best_block=$((hexnum))
 
 echo "   → Current block number: $best_block"

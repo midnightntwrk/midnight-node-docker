@@ -106,9 +106,8 @@ else
 fi
 
 START_EPOCH=$CURRENT_EPOCH  # Assume EPOCH is already set
-for ((i = 0; i <= 10; i++)); do
+for ((i = 0; i <= 3; i++)); do
     CURRENT_EPOCH=$((START_EPOCH + i))
-    # echo "Checking epoch $CURRENT_EPOCH"
 
     # Replace this with your actual command and condition
     RESPONSE=$(curl -s -H "Content-Type: application/json" \
