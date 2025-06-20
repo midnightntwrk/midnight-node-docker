@@ -4,7 +4,7 @@
 /.github/workflows/checkmarx.yaml @midnightntwrk/mn-security @midnightntwrk/mn-it
 /.github/workflows/dependabot.yml @midnightntwrk/mn-security @midnightntwrk/mn-it
 CODE_OF_CONDUCT.md @midnightntwrk/mn-security @midnightntwrk/mn-it
-CODEOWNERS @midnightntwrk/mn-security @midnightntwrk/mn-it
+CODEOWNERS @midnightntwrk/mn-security @midnightntwrk/mn-it @midnightntwrk/mn-devrel 
 CONTRIBUTING.md @midnightntwrk/mn-security @midnightntwrk/mn-it
 LICENSE @midnightntwrk/mn-security @midnightntwrk/mn-it
 SECURITY.md @midnightntwrk/mn-security @midnightntwrk/mn-it
