@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 docker run -it \
   --name midnight \
   -e CFG_PRESET="${CFG_PRESET}" \
