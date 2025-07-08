@@ -87,15 +87,15 @@ jobs:
       - name: Filter out repo level issues that github can't handle
         run: |
           mv ./cx_result.sarif ./cx_result.sarif.orig
-          cat cx_result.sarif.orig | jq '. | .runs[0].results |= map(select(.locations[0].physicalLocation.artifactLocation.uri != ""))' > cx_result.sarif
+          jq '. | .runs[0].results |= map(select(.locations[0].physicalLocation.artifactLocation.uri != ""))' cx_result.sarif.orig > cx_result.sarif
 
       # This allows github to understand a security ci job has been run
       - name: Upload Checkmarx SARIF as artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882  # v4.4.3
         with:
           name: checkmarx-sarif
           path: cx_result.sarif
       - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@86b04fb0e47484f7282357688f21d5d0e32175fe  # v3.29.2
         with:
           sarif_file: cx_result.sarif
