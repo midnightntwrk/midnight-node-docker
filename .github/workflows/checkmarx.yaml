@@ -82,7 +82,6 @@ jobs:
           cx_client_secret: ${{ secrets.CX_CLIENT_SECRET_EU }}
           additional_params: >
             --report-format sarif
-            --output-path .
             --scs-repo-url https://github.com/midnightntwrk/midnight-node-docker
             --scs-repo-token ${{ secrets.MIDNIGHTCI_REPO }}
       # This allows github to understand a security ci job has been run
