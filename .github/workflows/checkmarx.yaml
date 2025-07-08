@@ -73,9 +73,6 @@ jobs:
             echo "Checkmarx One server is healthy. Proceeding with scan."
           fi
 
-      - name: Set working directory
-        run: echo "REPO_PATH=$(pwd)" >> $GITHUB_ENV
-
       - name: Checkmarx One CLI Action
         uses: checkmarx/ast-github-action@88c60148b7b9689d67eb05bf66a65bbb871f2f2c #2.3.20
         with:
@@ -88,8 +85,12 @@ jobs:
             --output-path .
             --scs-repo-url https://github.com/midnightntwrk/midnight-node-docker
             --scs-repo-token ${{ secrets.MIDNIGHTCI_REPO }}
-            --repo-path ${{ env.REPO_PATH }}
       # This allows github to understand a security ci job has been run
+      - name: Upload Checkmarx SARIF as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: checkmarx-sarif
+          path: cx_result.sarif
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@v3
         with:
