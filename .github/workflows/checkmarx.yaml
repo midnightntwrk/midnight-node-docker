@@ -80,4 +80,9 @@ jobs:
           base_uri: https://eu-2.ast.checkmarx.net/
           cx_client_id: ${{ secrets.CX_CLIENT_ID }}
           cx_client_secret: ${{ secrets.CX_CLIENT_SECRET_EU }}
-          additional_params: --scs-repo-url https://github.com/midnightntwrk/midnight-node-docker --scs-repo-token ${{ secrets.MIDNIGHTCI_REPO }}
+          additional_params: --report-format sarif --output-path . --scs-repo-url https://github.com/midnightntwrk/midnight-node-docker --scs-repo-token ${{ secrets.MIDNIGHTCI_REPO }}
+      # This allows github to understand a security ci job has been run
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: cx_result.sarif
