@@ -84,6 +84,11 @@ jobs:
             --report-format sarif
             --scs-repo-url https://github.com/midnightntwrk/midnight-node-docker
             --scs-repo-token ${{ secrets.MIDNIGHTCI_REPO }}
+      - name: Filter out repo level issues that github can't handle
+        run: |
+          mv ./cx_result.sarif ./cx_result.sarif.orig
+          echo cx_result.sarif.orig | jq '. | .runs[0].results |= map(select(.locations[0].physicalLocation.artifactLocation.uri != ""))' > cx_result.sarif
+
       # This allows github to understand a security ci job has been run
       - name: Upload Checkmarx SARIF as artifact
         uses: actions/upload-artifact@v4
