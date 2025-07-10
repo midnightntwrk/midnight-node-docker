@@ -5,6 +5,7 @@ permissions:
   contents: read             # we only need to checkout code
   actions: read              # to query workflows/runs
   pull-requests: write       # to comment on or label PRs
+  security-events: write     # to upload the scan results
 
 on:
   pull_request:
