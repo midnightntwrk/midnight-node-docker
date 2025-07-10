@@ -4,9 +4,9 @@
 CONTAINER_NAME="midnight"
 
 # Check if the container already exists
-if [ $(docker ps -a -f name=^${CONTAINER_NAME}$ --format '{{.Names}}' | grep -w ${CONTAINER_NAME} | wc -l) -eq 0 ]; then
+if [ "$(docker ps -a -f name=^${CONTAINER_NAME}$ --format '{{.Names}}' | grep -c -w "${CONTAINER_NAME}")" -eq 0 ]; then
   echo "Container '${CONTAINER_NAME}' does not exist. Creating and starting it..."
-  
+
   # Run the container with the specified configuration
   docker run -it \
     --name ${CONTAINER_NAME} \
@@ -18,13 +18,13 @@ if [ $(docker ps -a -f name=^${CONTAINER_NAME}$ --format '{{.Names}}' | grep -w 
     "${MIDNIGHT_NODE_IMAGE}"
 else
   echo "Container '${CONTAINER_NAME}' already exists. Opening an interactive shell..."
-  
+
   # Check if the container is running, if not, start it
-  if [ $(docker ps -f name=^${CONTAINER_NAME}$ --format '{{.Names}}' | grep -w ${CONTAINER_NAME} | wc -l) -eq 0 ]; then
+  if [ "$(docker ps -f name=^${CONTAINER_NAME}$ --format '{{.Names}}' | grep -c -w "${CONTAINER_NAME}")" -eq 0 ]; then
     echo "Starting container '${CONTAINER_NAME}'..."
     docker start ${CONTAINER_NAME}
   fi
-  
+
   # Open an interactive shell in the container
   docker exec -it ${CONTAINER_NAME} /bin/bash
 fi
