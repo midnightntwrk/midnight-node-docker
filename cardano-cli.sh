@@ -11,11 +11,6 @@ else
   exit 1
 fi
 
-DOCKER_DEFAULT_PLATFORM=linux/amd64 docker run --rm \
-  --network container:cardano-node \
-  -e CARDANO_NODE_SOCKET_PATH="/ipc/node.socket" \
-  -e CARDANO_NODE_NETWORK_ID="${CARDANO_NODE_NETWORK_ID}" \
-  -v ~/ipc:/ipc \
-  -v "${CARDANO_DATA_DIR}:/data" \
-  "${CARDANO_IMAGE}" \
-  cli "$@"
+# Run in same container as cardano-node.
+# docker exec doesn't support `--env` params so wrapped in an `sh`.
+docker exec -t cardano-node sh -c "CARDANO_NODE_NETWORK_ID=${CARDANO_NODE_NETWORK_ID} /usr/local/bin/cardano-cli $*"

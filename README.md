@@ -62,7 +62,6 @@ To restart from fresh, run:
 ```sh
 docker compose -f ./compose-partner-chains.yml -f ./compose.yml -f ./proof-server.yml down -v
 docker compose -f ./compose-partner-chains.yml -f ./compose.yml -f ./proof-server.yml kill
-rm ~/ipc/node.socket
 rm -R ./cardano-data
 docker volume rm midnight-node-docker_midnight-data-testnet
 ```

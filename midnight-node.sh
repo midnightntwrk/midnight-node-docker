@@ -6,15 +6,4 @@ if [ -z "$MIDNIGHT_NODE_IMAGE" ]; then
   exit 1
 fi
 
-if [[ "$(uname)" == "Darwin" ]]; then
-  # For arm mac persuade docker to be more liberal:
-  export DOCKER_DEFAULT_PLATFORM=linux/arm64
-fi
-
-docker run -it \
-  -e CFG_PRESET="${CFG_PRESET}" \
-  -e DB_SYNC_POSTGRES_CONNECTION_STRING="${DB_SYNC_POSTGRES_CONNECTION_STRING}" \
-  -v ./data:/data \
-  -v "./envs/${CFG_PRESET}/pc-chain-config.json:/pc-chain-config.json" \
-  "${MIDNIGHT_NODE_IMAGE}" \
-  "$@"
+docker exec -t midnight /midnight-node "$@"

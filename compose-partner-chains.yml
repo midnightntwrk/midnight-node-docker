@@ -14,7 +14,7 @@
 # limitations under the License.
 
 volumes:
-  cardano-data: {}
+  cardano-ipc: {}
   db-sync-data: {}
   postgres-data: {}
   ogmios-data: {}
@@ -31,7 +31,7 @@ services:
       - NETWORK=${CARDANO_NETWORK}
       - CARDANO_NODE_SOCKET_PATH=/ipc/node.socket
     volumes:
-      - ${HOME_IPC}:/ipc   # Use ${HOME_IPC} from .envrc
+      - cardano-ipc:/ipc
       - ${CARDANO_DATA_DIR}:/data
 
   postgres:
@@ -70,7 +70,7 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     volumes:
-      - ${HOME_IPC}:/node-ipc  # Use ${HOME_IPC} from .envrc
+      - cardano-ipc:/node-ipc
       - db-sync-data:/var/lib
 
   cardano-ogmios:
@@ -83,7 +83,7 @@ services:
     ports:
       - "1337:1337"
     volumes:
-      - ${HOME_IPC}:/ipc  # Use ${HOME_IPC} from .envrc
+      - cardano-ipc:/ipc
       - ogmios-data:/data
     command:
       - --node-socket
