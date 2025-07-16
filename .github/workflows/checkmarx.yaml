@@ -21,6 +21,7 @@ jobs:
       contents: read
       pull-requests: write
       statuses: write
+      security-events: write
 
     runs-on: ubuntu-latest
 
