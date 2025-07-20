@@ -87,8 +87,8 @@ jobs:
       - name: Filter out repo level issues that github can't handle
         run: |
           mv ./cx_result.sarif ./cx_result.sarif.orig
-          export REPO_URL="file:/README.md"
-          jq --arg repo_url "$REPO_URL" '.runs |= map(.results |= map(.locations |= map(if .physicalLocation.artifactLocation.uri == "" then .physicalLocation.artifactLocation.uri = $repo_url else . end)))' cx_result.sarif.orig > cx_result.sarif
+          export REPO_URI="file:/README.md"
+          jq --arg repo_uri "$REPO_URI" '.runs |= map(.results |= map(.locations |= map(if .physicalLocation.artifactLocation.uri == "" then .physicalLocation.artifactLocation.uri = $repo_uri else . end)))' cx_result.sarif.orig > cx_result.sarif
 
       # Upload results to github
       - name: Upload SARIF file
