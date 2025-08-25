@@ -22,5 +22,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 💼 Other
 
-- *(deps)* Bump checkmarx/ast-github-action from 2.3.18 to 2.3.19 (#9)
 - Be explicit about image
