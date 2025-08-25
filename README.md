@@ -10,6 +10,7 @@ This allows for easy orchestration of the Midnight Node service.
 
 ## Usage
 
+
 1. Clone repository
 
 2. In `.envrc` set CFG_PRESET to be the environment you wish to point to (E.g. testnet-02).
