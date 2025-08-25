@@ -9,7 +9,10 @@ permissions:
 
 on:
   # pull_request_target allows secrets to be read from fork PRs.
-  # Do not build or run checked out code from this job.
+  # DO NOT build or run checked out code from this job.
+  #
+  # Please note: Due to how this job is run, any changes to this
+  # job will only take affect when merged to main.
   #
   # From https://michaelheap.com/access-secrets-from-forks/
   # Also see https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/
