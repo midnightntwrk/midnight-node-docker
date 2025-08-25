@@ -9,7 +9,7 @@ permissions:
 
 on:
   pull_request_target:
-    types: [opened, synchronize]
+    types: [opened, synchronize, reopened]
   push:
     branches: [ 'main' ]
 concurrency:
@@ -27,6 +27,7 @@ jobs:
 
     steps:
       # From https://michaelheap.com/access-secrets-from-forks/
+      # Also see https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/
       - name: Get User Permission
         id: checkAccess
         uses: actions-cool/check-user-permission@v2
@@ -46,6 +47,8 @@ jobs:
       # This is dangerous without the first access check
       - name: Checkout
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8  #v5.0.0
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Install dependencies
         run: |
