@@ -18,6 +18,7 @@ This allows for easy orchestration of the Midnight Node service.
 
 4. Run `docker-compose up`
 
+
 The `.envrc` file will automatically create a random private key and save it as `midnight-node.privatekey`.
 
 Choose which compose files to use:
@@ -46,7 +47,7 @@ or to run the Midnight Node, Cardano DB Sync and a local Proof Server, you can d
 docker compose -f ./compose-partner-chains.yml -f ./compose.yml -f ./proof-server.yml up -d
 ```
 
-🚀 That's it.
+🚀 That's all.
 
 ### Troubleshooting
 
