@@ -30,7 +30,7 @@ jobs:
       # Also see https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/
       - name: Get User Permission
         id: checkAccess
-        uses: actions-cool/check-user-permission@v2
+        uses: actions-cool/check-user-permission@7b90a27f92f3961b368376107661682c441f6103  #v2
         with:
           require: write
           username: ${{ github.triggering_actor }}
