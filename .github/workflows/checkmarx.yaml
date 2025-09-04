@@ -109,6 +109,11 @@ jobs:
           mv ./cx_result.sarif ./cx_result.sarif.orig
           jq '.runs |= map(.results |= map(.locations |= map(if .physicalLocation.artifactLocation.uri == "" then .physicalLocation.artifactLocation.uri = "file:/README.md" else . end)))' cx_result.sarif.orig > cx_result.sarif
 
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cx_result-sarif
+          path: cx_result.sarif
+
       # Upload results to github
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@7273f08caa1dcf2c2837f362f1982de0ab4dc344  # v3.29.2
