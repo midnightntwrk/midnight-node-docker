@@ -35,7 +35,7 @@ jobs:
 
     steps:
       - name: Check access
-        if: ${{ github.event.pull_request.author_association != 'COLLABORATOR' && github.event.pull_request.author_association != 'OWNER' }}
+        if: ${{ github.event.pull_request.author_association != 'COLLABORATOR' && github.event.pull_request.author_association != 'OWNER' && github.event.pull_request.author_association != 'MEMBER' }}
         run: |
           echo "This job needs re-running by someone with collaboration permissions."
           exit 1
