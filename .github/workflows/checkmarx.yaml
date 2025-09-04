@@ -8,14 +8,6 @@ permissions:
   security-events: write     # to upload the scan results
 
 on:
-  # pull_request_target allows secrets to be read from fork PRs.
-  # DO NOT build or run checked out code from this job.
-  #
-  # Please note: Due to how this job is run, any changes to this
-  # job will only take affect when merged to main.
-  #
-  # From https://michaelheap.com/access-secrets-from-forks/
-  # Also see https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/
   pull_request_target:
     types: [opened, synchronize, reopened]
   push:
@@ -34,10 +26,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check access
-        if: ${{ github.event.pull_request.author_association != 'COLLABORATOR' && github.event.pull_request.author_association != 'OWNER' }}
+      # From https://michaelheap.com/access-secrets-from-forks/
+      # Also see https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/
+      - name: Get User Permission
+        id: checkAccess
+        uses: actions-cool/check-user-permission@7b90a27f92f3961b368376107661682c441f6103  #v2
+        with:
+          require: write
+          username: ${{ github.triggering_actor }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Check User Permission
+        if: steps.checkAccess.outputs.require-result == 'false'
         run: |
-          echo "This job needs re-running by someone with collaboration permissions."
+          echo "${{ github.triggering_actor }} does not have permissions on this repo."
+          echo "Current permission level is ${{ steps.checkAccess.outputs.user-permission }}"
+          echo "Job originally triggered by ${{ github.actor }}"
           exit 1
 
       # This is dangerous without the first access check
