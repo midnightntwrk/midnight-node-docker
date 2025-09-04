@@ -35,7 +35,7 @@ jobs:
 
     steps:
       - name: Check access
-        if: ${{ github.event.pull_request.author_association != 'COLLABORATOR' && github.event.pull_request.author_association != 'OWNER' }}
+        if: ${{ github.event.pull_request.author_association != 'COLLABORATOR' && github.event.pull_request.author_association != 'OWNER' && github.event.pull_request.author_association != 'MEMBER' }}
         run: |
           echo "This job needs re-running by someone with collaboration permissions."
           exit 1
@@ -108,6 +108,11 @@ jobs:
         run: |
           mv ./cx_result.sarif ./cx_result.sarif.orig
           jq '.runs |= map(.results |= map(.locations |= map(if .physicalLocation.artifactLocation.uri == "" then .physicalLocation.artifactLocation.uri = "file:/README.md" else . end)))' cx_result.sarif.orig > cx_result.sarif
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cx_result-sarif
+          path: cx_result.sarif
 
       # Upload results to github
       - name: Upload SARIF file
