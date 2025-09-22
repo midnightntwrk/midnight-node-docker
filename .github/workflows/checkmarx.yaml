@@ -4,8 +4,16 @@ name: Checkmarx One Scan
 permissions: {}
 
 on:
-  pull_request:
-    branches: [ '**' ]
+  # pull_request_target allows secrets to be read from fork PRs.
+  # DO NOT build or run checked out code from this job.
+  #
+  # Please note: Due to how this job is run, any changes to this
+  # job will only take affect when merged to main.
+  #
+  # From https://michaelheap.com/access-secrets-from-forks/
+  # Also see https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/
+  pull_request_target:
+    types: [opened, synchronize, reopened]
   push:
     branches: [ 'main' ]
   workflow_dispatch: {}   # so you can still run it manually
@@ -25,9 +33,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
-
       # TODO: Remove this checkout step once upload-sarif-github-action repo is made public
       # Currently required because GitHub Actions can't directly reference private repos
       - name: Checkout Upload action repository
@@ -47,3 +52,4 @@ jobs:
           cx-tenant: ${{ secrets.CX_TENANT }}
           scs-repo-token: ${{ secrets.MIDNIGHTCI_REPO }}
           upload-to-github: 'true'
+          additional-params: " --branch ${{ github.event.pull_request.head.ref }} "
