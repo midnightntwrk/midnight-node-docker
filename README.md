@@ -81,7 +81,7 @@ socket file: `rm ~/ipc/node.socket` and restart.
 
 #### Midnight node Errors
 
-If you encounter this message on the midnight node it's likely that the
+If you encounter this message on the midnight node, it's likely that the
 cardano-node is still syncing and it will go away once it's fully synced:
 
 ```text
