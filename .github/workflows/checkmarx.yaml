@@ -1,10 +1,11 @@
-name: Checkmarx One Scan
+name: Checkmarx One Scan (Fork-Friendly)
 
 # use only job-level permissions
 permissions: {}
 
 on:
-  pull_request:
+  pull_request_target:  # Changed from pull_request to pull_request_target
+    types: [opened, synchronize, reopened]
     branches: [ '**' ]
   push:
     branches: [ 'main' ]
@@ -25,8 +26,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+      # CRITICAL: DO NOT CHECKOUT THE PR CODE
+      # This is what makes it safe with pull_request_target
 
       # TODO: Remove this checkout step once upload-sarif-github-action repo is made public
       # Currently required because GitHub Actions can't directly reference private repos
@@ -34,16 +35,18 @@ jobs:
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
         with:
           repository: midnightntwrk/upload-sarif-github-action
-          ref: 8202d2182e4c0ebec293f9d9140c3378a2afe16e
+          ref: sean/PM-19431-fork-friendly-checkmarx  # Use branch until merged
           path: upload-sarif-github-action
           token: ${{ secrets.MIDNIGHTCI_REPO }}
 
-      # Once public, can simplify to: uses: midnightntwrk/upload-sarif-github-action/checkmarx-scan@8202d2182e4c0ebec293f9d9140c3378a2afe16e
-      - name: Checkmarx Full Scan
-        uses: ./upload-sarif-github-action/checkmarx-scan
+      # Once public and merged, can simplify to:
+      # uses: midnightntwrk/upload-sarif-github-action/checkmarx-scan-public@main
+      - name: Checkmarx Full Scan (Fork-Friendly)
+        uses: ./upload-sarif-github-action/checkmarx-scan-public
         with:
+          project-name: midnightntwrk/midnight-node-docker
           cx-client-id: ${{ secrets.CX_CLIENT_ID }}
           cx-client-secret: ${{ secrets.CX_CLIENT_SECRET_EU }}
           cx-tenant: ${{ secrets.CX_TENANT }}
-          scs-repo-token: ${{ secrets.MIDNIGHTCI_REPO }}
+          # repo-url and branch are auto-detected from PR context
           upload-to-github: 'true'
