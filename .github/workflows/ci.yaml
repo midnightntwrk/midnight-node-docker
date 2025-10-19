@@ -32,7 +32,7 @@ jobs:
           docker compose -f proof-server.yml config -q
 
       - name: Run Super-linter
-        uses: github/super-linter@v7
+        uses: github/super-linter@b807e99ddd37e444d189cfd2c2ca1274d8ae8ef1  #v7
         env:
           # only lint the file types you care about
           VALIDATE_YAML: true
