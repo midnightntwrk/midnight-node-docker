@@ -18,7 +18,7 @@ volumes:
 
 services:
   midnight-node-testnet:
-    container_name: midnight-node
+    container_name: ${MIDNIGHT_CONTAINER_NAME}
     restart: unless-stopped
     image: ${MIDNIGHT_NODE_IMAGE}
     ports:

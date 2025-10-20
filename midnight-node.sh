@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-if [ -z "$MIDNIGHT_NODE_IMAGE" ]; then
-  echo "Error: Env var MIDNIGHT_NODE_IMAGE is not set or is empty"
+if [ -z "$MIDNIGHT_CONTAINER_NAME" ]; then
+  echo "Error: Env var MIDNIGHT_CONTAINER_NAME is not set or is empty"
   echo "Please install direnv and run 'direnv allow' to activate it."
   exit 1
 fi
 
-docker exec -t midnight /midnight-node "$@"
+docker exec -t ${MIDNIGHT_CONTAINER_NAME} /midnight-node "$@"
