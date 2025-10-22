@@ -2,6 +2,12 @@
 
 We welcome your contributions to the Midnight network! By contributing, you'll play a vital role in shaping the future of a blockchain focused on data privacy.
 
+## Contributor License Agreement
+
+Like many other open source projects, we ask contributors to sign a contributor
+License Agreement before accepting contributions. We use CLA assistant (https://github.com/cla-assistant/cla-assistant) to streamline the CLA
+signing process, enabling contributors to sign our CLAs directly within a GitHub pull request.
+
 ## Getting Started
 
 * **Review Existing Contributions and Issues:** Before submitting, please check if a similar issue or feature request already exists by searching our issue tracker.
@@ -24,12 +30,16 @@ Ensure the title is a clear summary of the requirement and provides enough conte
 
 * **Pull Requests:** Code contributions are submitted via Pull Requests.
 * **Fork the Repository:** Create your own fork of the Midnight repository.
-* **Create a Branch:** Make your changes in a separate branch.
+* **Create a Branch:** Make your changes in a separate branch,
+  prefixed with a short name moniker (e.g. `jill-my-feature`).
 * **Follow Coding Standards:** Adhere to the coding style guides specified in our documentation.
 * **Write Tests:** Include unit tests and integration tests to cover your changes.
 * **Commit Messages:** Write clear and concise commit messages.
 * **Submit Pull Request:** Submit your pull request to the appropriate branch in the main repository.
-* **Code Review:** All pull requests undergo code review by project maintainers. Be prepared to address feedback from reviewers.
+* **Please do not `--force` pushes** - doing so means that reviewers will have to re-review all
+  commits in the PR rather than commits since last review.
+* **Code Review:** All pull requests undergo code review by project maintainers.
+  Be prepared to address feedback from reviewers.
 
 ## Requirements for Acceptable Contributions:
 
@@ -37,6 +47,26 @@ Ensure the title is a clear summary of the requirement and provides enough conte
 * **Testing:** New functionality must include corresponding unit tests and integration tests.
 * **Documentation:** Code changes should be accompanied by proposed relevant documentation updates.
 * **License:** All contributions must be compatible with the project's license.
+  Where possible all files should have this license header:
+
+```ts
+// This file is part of midnight-node-docker.
+// Copyright (C) 2025 Midnight Foundation
+// SPDX-License-Identifier: Apache-2.0
+// Licensed under the Apache License, Version 2.0 (the "License");
+// You may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//  http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+```
+
+Where this is not possible, a copy of the Apache 2.0 or the repository's top-level LICENSE file in the same directory is required
 
 ## Support and Communication:
 
