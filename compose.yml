@@ -16,8 +16,73 @@
 volumes:
   midnight-data-testnet: {}
   indexer-data: {}
+  postgres-data: {}
+  cardano-ipc: {}
+  db-sync-data: {}
 
 services:
+  postgres:
+    profiles: ["cardano"]
+    image: postgres:15.3
+    platform: linux/amd64
+    container_name: db-sync-postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  cardano-node:
+    profiles: ["cardano"]
+    image: ${CARDANO_IMAGE}
+    platform: linux/amd64
+    container_name: cardano-node
+    restart: unless-stopped
+    environment:
+      - NETWORK=${CARDANO_NETWORK}
+      - CARDANO_NODE_SOCKET_PATH=/ipc/node.socket
+    volumes:
+      - cardano-ipc:/ipc
+      - ${CARDANO_DATA_DIR}:/data
+    ports:
+      - "3001:3001"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f 127.0.0.1:12788 || exit 1"]
+      interval: 60s
+      timeout: 10s
+      retries: 5
+
+  cardano-db-sync:
+    profiles: ["cardano"]
+    image: ghcr.io/intersectmbo/cardano-db-sync:13.6.0.4
+    platform: linux/amd64
+    container_name: cardano-db-sync
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      cardano-node:
+        condition: service_healthy
+    environment:
+      - NETWORK=${CARDANO_NETWORK}
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - cardano-ipc:/node-ipc
+      - db-sync-data:/var/lib/cexplorer
+
   midnight-node-testnet:
     container_name: midnight-node
     restart: unless-stopped
@@ -41,13 +106,19 @@ services:
       - midnight-data-testnet:/node
 
   indexer-standalone:
+    profiles: ["cardano"]
     container_name: indexer
     restart: unless-stopped
     image: ${INDEXER_IMAGE}
     ports:
       - "8088:8088"  # GraphQL API
     environment:
-      - APP__APPLICATION__NETWORK_ID=${CFG_PRESET}
+      # v2.1.4 config structure (testnet-02, qanet)
+      - APP__CHAIN_INDEXER_APPLICATION__NETWORK_ID=${INDEXER_NETWORK_ID}
+      - APP__WALLET_INDEXER_APPLICATION__NETWORK_ID=${INDEXER_NETWORK_ID}
+      - APP__INFRA__API__NETWORK_ID=${INDEXER_NETWORK_ID}
+      # v3.x config structure (preview)
+      - APP__APPLICATION__NETWORK_ID=${INDEXER_NETWORK_ID}
       - APP__INFRA__NODE__URL=ws://midnight-node:9944
       - APP__INFRA__STORAGE__CNN_URL=/data/indexer.sqlite
       - APP__INFRA__SECRET=${INDEXER_SECRET}
@@ -56,8 +127,3 @@ services:
         condition: service_healthy
     volumes:
       - indexer-data:/data
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8088/health" ]
-      interval: 5s
-      timeout: 3s
-      retries: 5
