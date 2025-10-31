@@ -15,6 +15,7 @@
 
 volumes:
   midnight-data-testnet: {}
+  indexer-data: {}
 
 services:
   midnight-node-testnet:
@@ -38,3 +39,25 @@ services:
       - ./data:/data
       - ./envs/${CFG_PRESET}/pc-chain-config.json:/pc-chain-config.json
       - midnight-data-testnet:/node
+
+  indexer-standalone:
+    container_name: indexer
+    restart: unless-stopped
+    image: ${INDEXER_IMAGE}
+    ports:
+      - "8088:8088"  # GraphQL API
+    environment:
+      - APP__APPLICATION__NETWORK_ID=${CFG_PRESET}
+      - APP__INFRA__NODE__URL=ws://midnight-node:9944
+      - APP__INFRA__STORAGE__CNN_URL=/data/indexer.sqlite
+      - APP__INFRA__SECRET=${INDEXER_SECRET}
+    depends_on:
+      midnight-node-testnet:
+        condition: service_healthy
+    volumes:
+      - indexer-data:/data
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8088/health" ]
+      interval: 5s
+      timeout: 3s
+      retries: 5

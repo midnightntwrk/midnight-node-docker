@@ -1,0 +1,7 @@
+# overrides for preview
+export MIDNIGHT_NODE_IMAGE="ghcr.io/midnight-ntwrk/midnight-node:0.17.0-rc.4"
+export INDEXER_IMAGE="ghcr.io/midnight-ntwrk/indexer-standalone:3.0.0-alpha.5"
+
+# Well known addresses of network that allow discovery of all other nodes.
+export BOOTNODES="/dns/midnight-node-boot-01/tcp/30333/ws/p2p/12D3KooWK66i7dtGVNSwDh9tTeqov1q6LSdWsRLJvTyzTCaywYgK \
+/dns/midnight-node-boot-02/tcp/30333/ws/p2p/12D3KooWHqFfXFwb7WW4jwR8pr4BEf562v5M6c8K3CXAJq4Wx6ym"
