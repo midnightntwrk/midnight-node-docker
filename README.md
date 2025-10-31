@@ -12,17 +12,22 @@ This allows for easy orchestration of the Midnight Node service.
 
 1. Clone repository
 
-2. In `.envrc` set CFG_PRESET to be the environment you wish to point to (E.g. testnet-02).
+2. In `.envrc` set CFG_PRESET to be the environment you wish to point to. Available options:
+   - `qanet` - QA network
+   - `testnet-02` - TestNet 02
+   - `preview` - Preview network
 
 3. run `direnv allow` to load the environment variables
 
 4. Run `docker-compose up`
 
-The `.envrc` file will automatically create a random private key and save it as `midnight-node.privatekey`.
+The `.envrc` file will automatically create a random private key and save it as `midnight-node.privatekey` and a random secret for the indexer saved as `indexer.secret`.
+
+The default `compose.yml` now includes both the Midnight Node and Indexer Standalone, providing a GraphQL API at `http://localhost:8088`.
 
 Choose which compose files to use:
 
-- `compose.yml` for Midnight Node
+- `compose.yml` for Midnight Node + Indexer
 - `compose-partner-chains.yml` for Cardano + DB Sync
 - `proof-server.yml` for Local Proof Server
 
