@@ -21,34 +21,41 @@ This allows for easy orchestration of the Midnight Node service.
 
 4. Run `docker-compose up`
 
-The `.envrc` file will automatically create a random private key and save it as `midnight-node.privatekey` and a random secret for the indexer saved as `indexer.secret`.
+The `.envrc` file will automatically create random secrets and save them as `postgres.secret` (database password), `midnight-node.secret` (node private key), and `indexer.secret` (indexer app secret).
 
-The default `compose.yml` now includes both the Midnight Node and Indexer Standalone, providing a GraphQL API at `http://localhost:8088`.
+All services are defined in a single `compose.yml` file. Use Docker Compose profiles to control which services run:
 
-Choose which compose files to use:
+**Available profiles:**
 
-- `compose.yml` for Midnight Node + Indexer
-- `compose-partner-chains.yml` for Cardano + DB Sync
-- `proof-server.yml` for Local Proof Server
+- (no profile) - Midnight Node only
+- `cardano` - Adds Cardano stack (cardano-node, postgres, cardano-db-sync) and Indexer with GraphQL API at `http://localhost:8088`
+- `ogmios` - Adds Ogmios service at `http://localhost:1337`
+- `proof-server` - Adds local Proof Server at `http://localhost:6300`
 
-One can use one or multiple compose files at once.
+**Usage examples:**
 
-For example, to run the Midnight Node, you can do:
+Run Midnight Node only:
 
 ```shell
 docker compose up -d
 ```
 
-or to run the Midnight Node and Cardano DB Sync, you can do:
+Run Midnight Node + Cardano stack + Indexer:
 
 ```shell
-docker compose -f ./compose-partner-chains.yml -f ./compose.yml up -d
+docker compose --profile cardano up -d
 ```
 
-or to run the Midnight Node, Cardano DB Sync and a local Proof Server, you can do:
+Run with Cardano stack + Ogmios:
 
 ```shell
-docker compose -f ./compose-partner-chains.yml -f ./compose.yml -f ./proof-server.yml up -d
+docker compose --profile cardano --profile ogmios up -d
+```
+
+Run everything (Cardano + Ogmios + Proof Server):
+
+```shell
+docker compose --profile cardano --profile ogmios --profile proof-server up -d
 ```
 
 🚀 That's it.
@@ -65,8 +72,8 @@ If you're using `midnight-node smartcontract` or `midnight-node wizards` that ne
 To restart from fresh, run:
 
 ```sh
-docker compose -f ./compose-partner-chains.yml -f ./compose.yml -f ./proof-server.yml down -v
-docker compose -f ./compose-partner-chains.yml -f ./compose.yml -f ./proof-server.yml kill
+docker compose --profile cardano --profile ogmios --profile proof-server down -v
+docker compose --profile cardano --profile ogmios --profile proof-server kill
 rm -R ./cardano-data
 docker volume rm midnight-node-docker_midnight-data-testnet
 ```

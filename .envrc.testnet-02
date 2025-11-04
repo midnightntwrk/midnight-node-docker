@@ -1,7 +1,7 @@
 # overrides for testnet-02
 export MIDNIGHT_NODE_IMAGE="midnightnetwork/midnight-node:0.12.1"
 export INDEXER_IMAGE="ghcr.io/midnight-ntwrk/indexer-standalone:2.1.4"
-export INDEXER_NETWORK_ID="TestNet"
+export INDEXER_NETWORK_ID="testnet"
 
 # Mock mode configuration
 export MOCK_REGISTRATIONS_FILE="res/mock-bridge-data/testnet-02-mock.json"

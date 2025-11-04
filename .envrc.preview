@@ -1,7 +1,7 @@
 # overrides for preview
 export MIDNIGHT_NODE_IMAGE="ghcr.io/midnight-ntwrk/midnight-node:0.17.0-rc.4"
 export INDEXER_IMAGE="ghcr.io/midnight-ntwrk/indexer-standalone:3.0.0-alpha.5"
-export INDEXER_NETWORK_ID="Preview"
+export INDEXER_NETWORK_ID="preview"
 
 # Mock mode configuration
 export MOCK_REGISTRATIONS_FILE="res/mock-bridge-data/default-registrations.json"

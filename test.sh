@@ -22,7 +22,7 @@ fi
 
 cardano_container=$(docker ps --filter "name=cardano-node")
 if [[ "$cardano_container" != *"cardano"* ]]; then
-  echo "cardano container not running, please run docker compose -f ./compose-partner-chains.yml -d"
+  echo "cardano container not running, please run: docker compose --profile cardano up -d"
   exit 1
 fi
 
@@ -119,7 +119,7 @@ fi
 #
 midnight=$(docker ps --filter "name=midnight")
 if [[ "$midnight" != *"midnight"* ]]; then
-  echo "❌ midnight container not running, please run docker compose -d"
+  echo "❌ midnight container not running, please run: docker compose up -d"
   exit 1
 fi
 

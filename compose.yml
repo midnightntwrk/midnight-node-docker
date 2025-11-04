@@ -19,6 +19,7 @@ volumes:
   postgres-data: {}
   cardano-ipc: {}
   db-sync-data: {}
+  ogmios-data: {}
 
 services:
   postgres:
@@ -34,7 +35,7 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
     ports:
-      - "${POSTGRES_PORT}:5432"
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
       interval: 5s
@@ -127,3 +128,34 @@ services:
         condition: service_healthy
     volumes:
       - indexer-data:/data
+
+  cardano-ogmios:
+    profiles: ["ogmios"]
+    image: cardanosolutions/ogmios:v6.11.0
+    platform: linux/amd64
+    container_name: cardano-ogmios
+    restart: unless-stopped
+    environment:
+      - DATA_DIR=/data
+    ports:
+      - "1337:1337"
+    volumes:
+      - cardano-ipc:/ipc
+      - ogmios-data:/data
+    command:
+      - --node-socket
+      - /ipc/node.socket
+      - --node-config
+      - /config/${CARDANO_NETWORK}/cardano-node/config.json
+      - --host
+      - 0.0.0.0
+
+  proof-server:
+    profiles: ["proof-server"]
+    image: midnightnetwork/proof-server:4.0.0
+    container_name: proof-server
+    ports:
+      - "6300:6300"
+    command: "'midnight-proof-server --network testnet'"
+    healthcheck:
+      test: ["CMD", "/bin/bash", "-c", ":> /dev/tcp/127.0.0.1/6300 || exit 1"]
