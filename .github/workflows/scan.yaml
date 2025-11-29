@@ -51,7 +51,7 @@ jobs:
         id: get-images
         run: |
           source "./.envrc" && IMAGES="$(docker compose -f ./compose.yml -f ./compose-partner-chains.yml config --images | jq -R -s -c 'split("\n")[:-1]')"
-          echo "images=$IMAGES" >> $GITHUB_OUTPUT
+          echo "images=$IMAGES" >> "$GITHUB_OUTPUT"
 
   scan:
     needs: build
