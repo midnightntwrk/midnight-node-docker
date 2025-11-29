@@ -45,12 +45,12 @@ jobs:
       - name: Build images
         env:
           DOCKER_BUILDKIT: 1
-        run: source ./.envrc && docker compose -f ./compose.yml -f ./compose-partner-chains.yml build
+        run: source "./.envrc" && docker compose -f ./compose.yml -f ./compose-partner-chains.yml build
 
       - name: Build and get image list
         id: get-images
         run: |
-          source ./.envrc && IMAGES="$(docker compose -f ./compose.yml -f ./compose-partner-chains.yml config --images | jq -R -s -c 'split("\n")[:-1]')"
+          source "./.envrc" && IMAGES="$(docker compose -f ./compose.yml -f ./compose-partner-chains.yml config --images | jq -R -s -c 'split("\n")[:-1]')"
           echo "images=$IMAGES" >> $GITHUB_OUTPUT
 
   scan:
