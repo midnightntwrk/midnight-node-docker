@@ -45,7 +45,7 @@ jobs:
       - name: Build images
         env:
           DOCKER_BUILDKIT: 1
-        run: docker compose -f ./compose.yml -f ./compose-partner-chains.yml build
+        run: source ./.envrc && docker compose -f ./compose.yml -f ./compose-partner-chains.yml build
 
       - name: Get image list
         id: get-images
