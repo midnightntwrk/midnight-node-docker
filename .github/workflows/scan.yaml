@@ -10,15 +10,14 @@ on:
     branches: ['**']
 
 jobs:
-  build:
-    name: Build code
-    runs-on: ubuntu-latest
+  scan-fs:
+    name: Fs scan code
+    runs-on: ubuntu-slim
     permissions:
-      contents: read             # we only need to checkout code
-      actions: read              # to query workflows/runs
+      actions: read
+      contents: read
+      security-events: write
       statuses: write
-    outputs:
-      images: ${{ steps.get-images.outputs.images }}
     steps:
       - name: Check out code
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5.0.0
@@ -40,47 +39,32 @@ jobs:
         if: success() || failure()
         with:
           sarif_file: trivy-results.sarif
-          category: 'trivy'
+          category: 'trivy-fs'
 
-      - name: Build images
-        env:
-          DOCKER_BUILDKIT: 1
-        run: source "./.envrc" && docker compose -f ./compose.yml -f ./compose-partner-chains.yml build
-
-      - name: Build and get image list
-        id: get-images
-        run: |
-          source "./.envrc" && IMAGES="$(docker compose -f ./compose.yml -f ./compose-partner-chains.yml config --images | jq -R -s -c 'split("\n")[:-1]')"
-          echo "images=$IMAGES" >> "$GITHUB_OUTPUT"
-
-  scan:
-    needs: build
+  scan-images:
+    name: Build and scan code
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        image: ${{ fromJson(needs.build.outputs.images) }}
-
+        cfg_preset: ['testnet-02']
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+      statuses: write
     steps:
-      - name: Checkout
-        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3  #v6.0.0
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435  #v3.11.1
-
-      # - name: Build image
-      #   run: docker compose -f ./compose.yml build
-      #   env:
-      #     DOCKER_BUILDKIT: 1
-
-      - name: Run Trivy scanner
-        uses: aquasecurity/trivy-action@b6643a29fecd7f34b3597bc6acb0a98b03d33ff8  #v0.33.1
+      - name: Check out code
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5.0.0
         with:
-          image-ref: ${{ matrix.image }}
-          format: 'sarif'
-          output: 'trivy-results.sarif'
+          fetch-depth: 0
+
+      - name: Scan images
+        env:
+          CFG_PRESET: ${{ matrix.cfg_preset }}
+        run: source "./.envrc" && ./github/scan.sh
 
       - name: Upload to GitHub Security
         uses: github/codeql-action/upload-sarif@ce729e4d353d580e6cacd6a8cf2921b72e5e310a  #CodeQL Bundle v2.23.6
         with:
-          sarif_file: 'trivy-results.sarif'
-          category: ${{ matrix.image }}
+          sarif_file: '*.sarif'
+          category: 'trivy-images'

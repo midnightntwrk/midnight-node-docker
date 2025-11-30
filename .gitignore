@@ -3,4 +3,5 @@
 *.privatekey
 *.password
 *.secret
+*.sarif
 ogmios_client.log
