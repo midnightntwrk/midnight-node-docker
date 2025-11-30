@@ -64,7 +64,15 @@ jobs:
         run: source "./.envrc" && ./.github/scan.sh
 
       - name: Upload to GitHub Security
-        uses: github/codeql-action/upload-sarif@ce729e4d353d580e6cacd6a8cf2921b72e5e310a  #CodeQL Bundle v2.23.6
-        with:
-          sarif_file: '*.sarif'
-          category: 'trivy-images'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          for sarif_file in *.sarif; do
+            gh api \
+              --method POST \
+              -H "Accept: application/vnd.github+json" \
+              /repos/"${GITHUB_REPOSITORY}"/code-scanning/sarifs \
+              -f commit_sha="${GITHUB_SHA}" \
+              -f ref="${GITHUB_REF}" \
+              -f sarif="$(gzip -c "$sarif_file" | base64 -w0)"
+          done
