@@ -46,7 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        cfg_preset: ['testnet-02']
+        cfg_preset: ['testnet-02', 'qanet']
     permissions:
       actions: read
       contents: read
