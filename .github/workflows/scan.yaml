@@ -65,7 +65,7 @@ jobs:
 
       - name: Upload to GitHub Security
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           for sarif_file in *.sarif; do
             gh api \
