@@ -45,11 +45,13 @@ jobs:
     name: Build and scan code
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        cfg_preset: ['testnet-02', 'qanet']
+        cfg_preset: ['testnet-02', 'qanet', 'node-dev-01', 'preview', 'preprod']
     permissions:
       actions: read
       contents: read
+      packages: read
       security-events: write
       statuses: write
     steps:
@@ -57,6 +59,9 @@ jobs:
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5.0.0
         with:
           fetch-depth: 0
+
+      - name: Login to GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
 
       - name: Scan images
         env:
