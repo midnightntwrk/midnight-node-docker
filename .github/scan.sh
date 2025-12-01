@@ -24,7 +24,7 @@ scan_image() {
    '.runs[0].automationDetails = {
      id: "trivy/\($image)",
      description: {text: "Trivy scan for \($image)"}
-   }' $SARIF_FILE > ./scan_reports/${SARIF_FILE}
+   }' "$SARIF_FILE" > "./scan_reports/${SARIF_FILE}"
   echo "Completed $SARIF_FILE"
 }
 export -f scan_image

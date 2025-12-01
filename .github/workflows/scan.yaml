@@ -12,7 +12,7 @@ on:
 jobs:
   scan-fs:
     name: Fs scan code
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-latest
     permissions:
       actions: read
       contents: read
