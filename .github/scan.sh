@@ -5,10 +5,11 @@ source "./.envrc"
 docker compose -f ./compose.yml -f ./compose-partner-chains.yml build
 
 scan_image() {
-  local image="$1"
+  local image SAFE_NAME SARIF_FILE
+  image="$1"
   echo "Scanning $image..."
-  local SAFE_NAME=$(echo "$image" | sed 's/[\/:]/-/g')
-  local SARIF_FILE="${SAFE_NAME}.sarif"
+  SAFE_NAME=$(echo "$image" | sed 's/[\/:]/-/g')
+  SARIF_FILE="${SAFE_NAME}.sarif"
 
   time docker run --rm \
     -v /var/run/docker.sock:/var/run/docker.sock \
