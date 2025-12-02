@@ -1,0 +1,7 @@
+# shellcheck shell=bash
+# overrides for node-dev-01
+export MIDNIGHT_NODE_IMAGE="ghcr.io/midnight-ntwrk/midnight-node:0.18.0-rc.7"
+
+# Well known addresses of network that allow discovery of all other nodes.
+# TODO: Update with actual node-dev-01 bootnode addresses
+export BOOTNODES="/dns/boot-node.node-dev-01.dev.midnight.network/tcp/30333/ws/p2p/12D3KooWPLACEHOLDER"

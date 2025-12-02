@@ -45,8 +45,9 @@ jobs:
     name: Build and scan code
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        cfg_preset: ['testnet-02', 'qanet']
+        cfg_preset: ['testnet-02', 'qanet', 'node-dev-01', 'preview', 'preprod']
     permissions:
       actions: read
       contents: read

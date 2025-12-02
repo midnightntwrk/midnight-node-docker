@@ -1,0 +1,7 @@
+# shellcheck shell=bash
+# overrides for preprod
+export MIDNIGHT_NODE_IMAGE="ghcr.io/midnight-ntwrk/midnight-node:0.18.0-rc.6"
+
+# Well known addresses of network that allow discovery of all other nodes.
+# TODO: Update with actual preprod bootnode addresses
+export BOOTNODES="/dns/boot-node-7.preprod.midnight.network/tcp/30333/ws/p2p/12D3KooWPLACEHOLDER"
