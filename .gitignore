@@ -2,4 +2,7 @@
 /data
 *.privatekey
 *.password
+*.secret
+*.sarif
+/scan_reports
 ogmios_client.log
