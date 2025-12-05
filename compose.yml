@@ -31,6 +31,7 @@ services:
       - CFG_PRESET=${CFG_PRESET}
       - DB_SYNC_POSTGRES_CONNECTION_STRING=${DB_SYNC_POSTGRES_CONNECTION_STRING}
       - NODE_KEY=${NODE_KEY}
+      - CARDANO_SECURITY_PARAMETER=${CARDANO_SECURITY_PARAMETER}
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:9944/health" ]
       interval: 2s
