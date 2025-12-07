@@ -6,4 +6,4 @@ export BOOTNODES="/dns/boot-node-01.testnet-02.midnight.network/tcp/30333/ws/p2p
            /dns/boot-node-02.testnet-02.midnight.network/tcp/30333/ws/p2p/12D3KooWR1cHBUWPCqk3uqhwZqUFekfWj8T7ozK6S18DUT745v4d \
            /dns/boot-node-03.testnet-02.midnight.network/tcp/30333/ws/p2p/12D3KooWQxxUgq7ndPfAaCFNbAxtcKYxrAzTxDfRGNktF75SxdX5"
 
-export CARDANO_SECURITY_PARAMETER=2160
+export CARDANO_SECURITY_PARAMETER=432
