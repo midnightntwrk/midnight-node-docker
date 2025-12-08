@@ -27,9 +27,13 @@ jobs:
       - name: Check compose files
         run: |
           source ./.envrc
-          docker compose -f compose.yml config -q
-          docker compose -f compose-partner-chains.yml config -q
-          docker compose -f proof-server.yml config -q
+          # Test main compose file
+          docker compose config -q
+          # Test profiles
+          docker compose --profile cardano config -q
+          docker compose --profile ogmios config -q
+          docker compose --profile proof-server config -q
+          docker compose --profile cardano --profile ogmios --profile proof-server config -q
 
       - name: Run Super-linter
         uses: github/super-linter@b807e99ddd37e444d189cfd2c2ca1274d8ae8ef1  #v7

@@ -1,5 +1,4 @@
 /cardano-data/*
 /data
-*.privatekey
-*.password
+*.secret
 ogmios_client.log
