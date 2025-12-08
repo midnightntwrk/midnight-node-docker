@@ -27,10 +27,11 @@ services:
       - "9615:9615"   # Prometheus  - For monitoring, alerting and observability.
     environment:
       - APPEND_ARGS=${APPEND_ARGS}
-      - BOOTNODES=${BOOTNODES}
       - CFG_PRESET=${CFG_PRESET}
       - DB_SYNC_POSTGRES_CONNECTION_STRING=${DB_SYNC_POSTGRES_CONNECTION_STRING}
       - NODE_KEY=${NODE_KEY}
+      - CARDANO_SECURITY_PARAMETER=432
+      - ARGS=${ARGS}
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:9944/health" ]
       interval: 2s
@@ -38,3 +39,4 @@ services:
       - ./data:/data
       - ./envs/${CFG_PRESET}/pc-chain-config.json:/pc-chain-config.json
       - midnight-data-testnet:/node
+    
