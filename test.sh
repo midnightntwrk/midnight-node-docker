@@ -117,9 +117,9 @@ fi
 #
 # Check midnight-node has peers:
 #
-midnight=$(docker ps --filter "name=midnight")
-if [[ "$midnight" != *"midnight"* ]]; then
-  echo "❌ midnight container not running, please run docker compose -d"
+container_status=$(docker ps --filter "name=${MIDNIGHT_CONTAINER_NAME}" --format "{{.Names}}")
+if [[ "$container_status" != *"$MIDNIGHT_CONTAINER_NAME"* ]]; then
+  echo "❌ ${MIDNIGHT_CONTAINER_NAME} container not running, please run: docker compose up -d"
   exit 1
 fi
 
@@ -136,7 +136,7 @@ if [[ "$SHOULD_HAVE_PEERS" == "true" && "$PEERS" -lt 1 ]]; then
 
   echo "$HEALTH"
 
-  docker logs midnight  2>&1 | grep "Genesis mismatch"
+  docker logs ${MIDNIGHT_CONTAINER_NAME}  2>&1 | grep "Genesis mismatch"
   echo "For genesis mismatch, check that CFG_PRESET=$CFG_PRESET is aligned with BOOTNODES=$BOOTNODES"
   echo "If they're aligned then run ./reset-midnight.sh and restart"
   exit 1
