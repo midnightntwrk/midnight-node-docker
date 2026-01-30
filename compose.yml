@@ -30,13 +30,19 @@ services:
       - CFG_PRESET=${CFG_PRESET}
       - DB_SYNC_POSTGRES_CONNECTION_STRING=${DB_SYNC_POSTGRES_CONNECTION_STRING}
       - NODE_KEY=${NODE_KEY}
-      - CARDANO_SECURITY_PARAMETER=432
+      - CARDANO_SECURITY_PARAMETER=2160
       - ARGS=${ARGS}
+      - MC__FIRST_EPOCH_TIMESTAMP_MILLIS=1655769600000
+      - MC__FIRST_EPOCH_NUMBER=4
+      - MC__FIRST_SLOT_NUMBER=86400
+      - MC__EPOCH_DURATION_MILLIS=432000000
+      - MC__SLOT_DURATION_MILLIS=1000  
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:9944/health" ]
       interval: 2s
     volumes:
       - ./data:/data
       - ./envs/${CFG_PRESET}/pc-chain-config.json:/pc-chain-config.json
-      - midnight-data-testnet:/node
+      # - midnight-data-testnet:/node
+      - ./chain-data:/node
     

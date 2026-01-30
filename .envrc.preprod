@@ -1,11 +1,11 @@
 # If your on windows use wsl / git bash / cygwin / msys2 with direnv
 
-export CFG_PRESET=preview
-export MIDNIGHT_NODE_IMAGE="ghcr.io/midnight-ntwrk/midnight-node:0.18.0-rc.7"
+export CFG_PRESET=preprod
+export MIDNIGHT_NODE_IMAGE="ghcr.io/midnight-ntwrk/midnight-node:0.20.0"
 #export BOOTNODES="/dnsaddr/bootnodes.preview.midnight.network"
 #export BOOTNODES="/dns/bootnodes.preview.midnight.network"
 #export ARGS="--bootnodes /dns/midnight-7-midnight-node-boot-07/tcp/30333/ws/p2p/12D3KooWK66i7dtGVNSwDh9tTeqov1q6LSdWsRLJvTyzTCaywYgK --bootnodes /dns/bootnodes.preview.midnight.network/tcp/30333/ws/p2p/12D3KooWK66i7dtGVNSwDh9tTeqov1q6LSdWsRLJvTyzTCaywYgK --tracing-targets=info --rpc-methods unsafe --unsafe-rpc-external --state-pruning archive --blocks-pruning archive --rpc-cors=all --tx-ban-seconds 18000 --no-prometheus --no-telemetry"
-export ARGS="--bootnodes /dns/bootnode-1.preview.midnight.network/tcp/30333/ws/p2p/12D3KooWK66i7dtGVNSwDh9tTeqov1q6LSdWsRLJvTyzTCaywYgK --bootnodes /dns/bootnode-2.preview.midnight.network/tcp/30333/ws/p2p/12D3KooWHqFfXFwb7WW4jwR8pr4BEf562v5M6c8K3CXAJq4Wx6ym --tracing-targets=info --rpc-methods unsafe --unsafe-rpc-external --rpc-cors=all --tx-ban-seconds 18000 --no-prometheus --telemetry-url 'wss://telemetry-test.devnet.midnight.network/submit 0'"
+export ARGS="--bootnodes /dns/bootnode-1.preprod.midnight.network/tcp/30333/ws/p2p/12D3KooWQxxUgq7ndPfAaCFNbAxtcKYxrAzTxDfRGNktF75SxdX5 --bootnodes /dns/bootnode-2.preprod.midnight.network/tcp/30333/ws/p2p/12D3KooWNrUBs22FfmgjqFMa9ZqKED2jnxwsXWw5E4q2XVwN35TJ --telemetry-url 'wss://telemetry.shielded.tools./submit 1' --state-pruning archive --blocks-pruning archive --rpc-cors=all --name=scotts_local_preprod_node"
 
 #source ./.envrc.${CFG_PRESET}
 
@@ -35,7 +35,7 @@ export POSTGRES_PASSWORD="$(cat ./postgres.password)"
 export POSTGRES_DB="cexplorer"
 
 # We bring together the above variables into a database connection string:
-export DB_SYNC_POSTGRES_CONNECTION_STRING="psql://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST:$POSTGRES_PORT/$POSTGRES_DB"
+export DB_SYNC_POSTGRES_CONNECTION_STRING="psql://${POSTGRES_USER}:$POSTGRES_PASSWORD@${POSTGRES_HOST}:$POSTGRES_PORT/$POSTGRES_DB"
 
 
 # To start with debug logs, add "-l debug" to APPEND_ARGS
@@ -54,7 +54,7 @@ export NODE_KEY="$(cat ./midnight-node.privatekey)"
 #
 # Partner chains config:
 #
-export CARDANO_NETWORK=preview
+export CARDANO_NETWORK=preprod
 export CARDANO_IMAGE="ghcr.io/intersectmbo/cardano-node:10.5.3"
-export CARDANO_DATA_DIR=./cardano-data
+export CARDANO_DATA_DIR=./cardano-data-preprod
 export CARDANO_CONFIG_DIR=./cardano-config/${CARDANO_NETWORK}
