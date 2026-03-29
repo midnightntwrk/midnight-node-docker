@@ -66,6 +66,32 @@ rm -R ./cardano-data
 docker volume rm midnight-node-docker_midnight-data-testnet
 ```
 
+### Fast Sync with Mithril (Cardano)
+
+Syncing a Cardano node from scratch can take several days. To speed this up, you can use **Mithril** to download a verified snapshot of the blockchain. This usually takes between 30 minutes and a couple of hours.
+
+The restoration script is fully automated and will:
+- Download the latest immutable blocks (approx 14GB).
+- **Automatically inject the latest ledger state** (ancillary files) to bypass the lengthy block replay phase.
+- Configure the correct `protocolMagicId` for the network.
+
+#### Prerequisites
+Ensure you have the following tools installed:
+- `jq`, `wget`, `zstd`, `curl`
+- `docker` and `docker compose`
+
+#### Instructions
+1. Ensure `direnv allow` has been run so the Mithril configuration is loaded (or source `.envrc`).
+2. Ensure you are starting from a clean state (no `./cardano-data/db` directory).
+3. Run the restoration script:
+   ```sh
+   ./restore-cardano-snapshot.sh
+   ```
+4. Once complete, start your nodes as usual:
+   ```sh
+   docker compose -f ./compose-partner-chains.yml up -d cardano-node
+   ```
+
 #### Env vars not setup
 
 If you get warnings like this then likely `direnv` is not setup or `direnv allow` has not been run:
