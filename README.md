@@ -12,7 +12,7 @@ This allows for easy orchestration of the Midnight Node service.
 
 1. Clone repository
 
-2. In `.envrc` set CFG_PRESET to be the environment you wish to point to (E.g. testnet-02).
+2. In `.envrc` set `CFG_PRESET` to the preset you wish to point to (the default is `testnet-02`, which is retired — see [Networks](#networks)).
 
 3. run `direnv allow` to load the environment variables
 
@@ -47,6 +47,12 @@ docker compose -f ./compose-partner-chains.yml -f ./compose.yml -f ./proof-serve
 ```
 
 🚀 That's it.
+
+### Networks
+
+`testnet-02` was retired in January 2026 and its endpoints no longer resolve. The current public networks are `preview`, `preprod` and `mainnet`; see the [networks and environments](https://docs.midnight.network/docs/guides/networks-and-environments) documentation for endpoints and migration guidance.
+
+The presets shipped in this repository are `qanet` (internal network) and the retired `testnet-02` (kept for reference). Updated presets for the current public networks are tracked in [midnight-docs issue #1172](https://github.com/midnightntwrk/midnight-docs/issues/1172).
 
 ### Troubleshooting
 

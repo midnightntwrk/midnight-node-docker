@@ -1,3 +1,6 @@
+# RETIRED: testnet-02 was shut down in January 2026 and its bootnodes no
+# longer resolve. This preset is kept for reference only; see README for the
+# current network situation.
 # overrides for testnet-02
 export MIDNIGHT_NODE_IMAGE="midnightnetwork/midnight-node:0.12.0"
 
