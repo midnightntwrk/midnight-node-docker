@@ -93,4 +93,4 @@ or data not set on the main chain.
 
 ### LICENSE
 
-Apache 2.0. PRs welcome, please see [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+Apache 2.0. PRs welcome, please see [CONTRIBUTING.md](CONTRIBUTING.md) for detailss.
