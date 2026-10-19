@@ -35,7 +35,7 @@ services:
       - ${CARDANO_DATA_DIR}:/data
 
   postgres:
-    image: postgres:15.3
+    image: postgres:15.18@sha256:6eb0add3b77c081df18aa518ce43df58fdcc40f2e6d868a6fd08038dc7acd425
     platform: linux/amd64
     restart: unless-stopped
     container_name: db-sync-postgres
@@ -73,7 +73,7 @@ services:
       - db-sync-data:/var/lib
 
   cardano-ogmios:
-    image: cardanosolutions/ogmios:v6.11.0
+    image: cardanosolutions/ogmios:v6.14.0@sha256:c6f4be21e8edc4c38cce80c6558bd8c38338f35ec5d0f186c62103e9e95e7202
     platform: linux/amd64
     container_name: cardano-ogmios
     restart: unless-stopped
