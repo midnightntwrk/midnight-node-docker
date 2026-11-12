@@ -37,6 +37,7 @@ services:
   postgres:
     image: postgres:15.3
     platform: linux/amd64
+    restart: unless-stopped
     container_name: db-sync-postgres
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -53,7 +54,7 @@ services:
       retries: 5
 
   cardano-db-sync:
-    image: ghcr.io/intersectmbo/cardano-db-sync:13.6.0.4
+    image: ghcr.io/intersectmbo/cardano-db-sync:13.6.0.5
     platform: linux/amd64
     container_name: cardano-db-sync
     restart: unless-stopped
