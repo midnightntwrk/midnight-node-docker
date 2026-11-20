@@ -22,14 +22,15 @@ services:
     restart: unless-stopped
     image: ${MIDNIGHT_NODE_IMAGE}
     ports:
-      - "9944:9944"   # WebSocket   - For RPC/relay type of nodes (queries, new transaction submissions etc).
+      - "127.0.0.1:9944:9944"   # WebSocket   - For RPC/relay type of nodes (queries, new transaction submissions etc).
       - "30333:30333" # P2P Traffic - Peer-to-peer communication for node connectivity.
-      - "9615:9615"   # Prometheus  - For monitoring, alerting and observability.
+      - "127.0.0.1:9615:9615"   # Prometheus  - For monitoring, alerting and observability.
     environment:
       - APPEND_ARGS=${APPEND_ARGS}
       - BOOTNODES=${BOOTNODES}
       - CFG_PRESET=${CFG_PRESET}
       - DB_SYNC_POSTGRES_CONNECTION_STRING=${DB_SYNC_POSTGRES_CONNECTION_STRING}
+      - SSL_ROOT_CERT=/postgres-tls/ca.crt
       - NODE_KEY=${NODE_KEY}
       - CARDANO_SECURITY_PARAMETER=${CARDANO_SECURITY_PARAMETER}
     healthcheck:
@@ -37,5 +38,5 @@ services:
       interval: 2s
     volumes:
       - ./data:/data
-      - ./envs/${CFG_PRESET}/pc-chain-config.json:/pc-chain-config.json
+      - ./postgres-tls/ca.crt:/postgres-tls/ca.crt:ro
       - midnight-data-testnet:/node

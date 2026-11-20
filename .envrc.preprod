@@ -1,0 +1,9 @@
+# overrides for preprod
+# Node versions per network: https://docs.midnight.network/relnotes/support-matrix
+export MIDNIGHT_NODE_IMAGE="midnightntwrk/midnight-node:2.1.101"
+
+# The Preprod chain spec already lists its boot nodes.
+export BOOTNODES=""
+
+export CARDANO_NETWORK=preprod
+export CARDANO_SECURITY_PARAMETER=2160

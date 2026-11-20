@@ -1,0 +1,11 @@
+# overrides for preview
+# Node versions per network: https://docs.midnight.network/relnotes/support-matrix
+export MIDNIGHT_NODE_IMAGE="midnightntwrk/midnight-node:2.1.101"
+
+# The Preview chain spec lists no boot nodes, so they are passed here.
+# Source: https://docs.midnight.network/nodes/boot-node#known-network-boot-nodes
+export BOOTNODES="/dns/bootnode-1.preview.midnight.network/tcp/30333/ws/p2p/12D3KooWK66i7dtGVNSwDh9tTeqov1q6LSdWsRLJvTyzTCaywYgK \
+/dns/bootnode-2.preview.midnight.network/tcp/30333/ws/p2p/12D3KooWHqFfXFwb7WW4jwR8pr4BEf562v5M6c8K3CXAJq4Wx6ym"
+
+export CARDANO_NETWORK=preview
+export CARDANO_SECURITY_PARAMETER=432

@@ -117,7 +117,7 @@ fi
 #
 # Check midnight-node has peers:
 #
-midnight=$(docker ps --filter "name=midnight")
+midnight=$(docker ps --filter "name=midnight-node")
 if [[ "$midnight" != *"midnight"* ]]; then
   echo "❌ midnight container not running, please run docker compose -d"
   exit 1
@@ -136,7 +136,7 @@ if [[ "$SHOULD_HAVE_PEERS" == "true" && "$PEERS" -lt 1 ]]; then
 
   echo "$HEALTH"
 
-  docker logs midnight  2>&1 | grep "Genesis mismatch"
+  docker logs midnight-node  2>&1 | grep "Genesis mismatch"
   echo "For genesis mismatch, check that CFG_PRESET=$CFG_PRESET is aligned with BOOTNODES=$BOOTNODES"
   echo "If they're aligned then run ./reset-midnight.sh and restart"
   exit 1
@@ -195,7 +195,7 @@ else
   echo "❌ Chain has not progressed past block 0 (still at $best_block)"
 
   echo "if genesis mismatch check CFG_PREFIX is correct"
-  docker logs midnight  2>&1 | grep "Genesis mismatch"
+  docker logs midnight-node  2>&1 | grep "Genesis mismatch"
   echo "Also check that CFG_PRESET=$CFG_PRESET is alined with BOOTNODES=$BOOTNODES"
 
   exit 1

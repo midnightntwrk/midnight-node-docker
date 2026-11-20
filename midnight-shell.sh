@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Define container name
-CONTAINER_NAME="midnight"
+CONTAINER_NAME="midnight-node"
 
 # Check if the container already exists
 if [ "$(docker ps -a -f name=^${CONTAINER_NAME}$ --format '{{.Names}}' | grep -c -w "${CONTAINER_NAME}")" -eq 0 ]; then
@@ -13,7 +13,6 @@ if [ "$(docker ps -a -f name=^${CONTAINER_NAME}$ --format '{{.Names}}' | grep -c
     -e CFG_PRESET="${CFG_PRESET}" \
     -e DB_SYNC_POSTGRES_CONNECTION_STRING="${DB_SYNC_POSTGRES_CONNECTION_STRING}" \
     -v ./data:/data \
-    -v "./envs/${CFG_PRESET}/pc-chain-config.json:/pc-chain-config.json" \
     --entrypoint bash \
     "${MIDNIGHT_NODE_IMAGE}"
 else

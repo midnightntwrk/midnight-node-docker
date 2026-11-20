@@ -6,4 +6,4 @@ if [ -z "$MIDNIGHT_NODE_IMAGE" ]; then
   exit 1
 fi
 
-docker exec -t midnight /midnight-node "$@"
+docker exec -t midnight-node /midnight-node "$@"
