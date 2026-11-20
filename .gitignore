@@ -3,3 +3,4 @@
 *.privatekey
 *.password
 ogmios_client.log
+/postgres-tls

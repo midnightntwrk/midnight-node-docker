@@ -3,9 +3,9 @@
 if [ "$CARDANO_NETWORK" = "preview" ]; then
   CARDANO_NODE_NETWORK_ID=2
 elif [ "$CARDANO_NETWORK" = "mainnet" ]; then
-  CARDANO_NODE_NETWORK_ID=1
+  CARDANO_NODE_NETWORK_ID=mainnet
 elif [ "$CARDANO_NETWORK" = "preprod" ]; then
-  CARDANO_NODE_NETWORK_ID=0
+  CARDANO_NODE_NETWORK_ID=1
 else
   echo "Error: Unknown CARDANO_NETWORK: $CARDANO_NETWORK"
   exit 1
